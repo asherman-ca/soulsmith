@@ -1,15 +1,13 @@
 'use client'
 
 import { createClient } from '@/utils/supabase/client'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Input } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
-import { UserCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
+import { IconBrandGoogleFilled, IconUserCircle } from '@tabler/icons-react'
 
 const getURL = () => {
 	let url = process?.env?.NEXT_PUBLIC_SITE_URL as string
@@ -181,7 +179,7 @@ export default function Login() {
 							onClick={handleGoogleSignIn}
 							className='flex-1'
 							variant='bordered'
-							startContent={<FontAwesomeIcon icon={faGoogle} />}
+							startContent={<IconBrandGoogleFilled className='w-4 h-4' />}
 						>
 							<p>Sign in with Google</p>
 						</Button>
@@ -190,7 +188,7 @@ export default function Login() {
 							onClick={handleGuest}
 							className='flex-1'
 							variant='bordered'
-							startContent={<UserCircle2 className='h-5 w-5' />}
+							startContent={<IconUserCircle className='w-4 h-4' />}
 						>
 							Sign in as Guest
 						</Button>
