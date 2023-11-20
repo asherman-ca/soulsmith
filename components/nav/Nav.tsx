@@ -1,6 +1,5 @@
 import React from "react";
 import AuthButton from "../AuthButton";
-import { IconDiamond } from "@tabler/icons-react";
 
 const Nav = () => {
   return (
@@ -9,7 +8,6 @@ const Nav = () => {
         Soulstone Survivors
       </h1>
       <div className="flex items-center gap-4">
-        <p>Sign in</p>
         <AuthButton />
       </div>
     </nav>

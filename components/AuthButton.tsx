@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-// import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Button, Link } from "@nextui-org/react";
@@ -38,15 +37,18 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <Button
-      as={Link}
-      radius="full"
-      variant="faded"
-      className="p-2"
-      href="/login"
-      isIconOnly
-    >
-      <IconLogin />
-    </Button>
+    <div className="flex items-center gap-4">
+      Sign In
+      <Button
+        as={Link}
+        radius="full"
+        variant="faded"
+        className="p-2"
+        href="/login"
+        isIconOnly
+      >
+        <IconLogin />
+      </Button>
+    </div>
   );
 }
