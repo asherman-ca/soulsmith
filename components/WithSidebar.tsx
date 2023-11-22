@@ -1,12 +1,10 @@
-import {
-  IconBadges,
-  IconDiamond,
-  IconHammer,
-  IconUserCircle,
-} from "@tabler/icons-react";
+"use client";
+import { IconBadges, IconHammer, IconUserCircle } from "@tabler/icons-react";
 import { FC } from "react";
 import { IconHome } from "@tabler/icons-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/utils/tw";
 
 interface WithSidebarProps {
   children: React.ReactNode;
@@ -35,25 +33,23 @@ const links = [
   },
 ];
 
-const WithSidebar: FC<WithSidebarProps> = async ({ children }) => {
+const WithSidebar: FC<WithSidebarProps> = ({ children }) => {
+  const pathname = usePathname();
+
   return (
-    <div className="flex flex-1 text-gray-300">
-      <div className="grayborder flex flex-col border-r pb-6">
-        <Link
-          href="/"
-          className="grayborder flex h-[80px] items-center gap-1 border-b px-6 text-lg font-medium"
-        >
-          <IconDiamond className="h-[30px] w-[30px]" />
-          <div>
-            <span className="font-bold">SOUL</span>SMITH
-          </div>
-        </Link>
-        <div className="">
+    <div className="flex flex-1">
+      <div className="grayborder flex w-64 flex-col border-r p-4">
+        <div className="flex flex-col gap-2">
           {links.map((link) => {
             return (
               <Link
                 href={link.url}
-                className="flex cursor-pointer items-center gap-3 p-6 hover:bg-[#3F3F45]"
+                className={cn(
+                  "flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
+                  {
+                    "bg-[#3F3F45]": pathname === link.url,
+                  },
+                )}
               >
                 {link.icon}
                 <span>{link.name}</span>

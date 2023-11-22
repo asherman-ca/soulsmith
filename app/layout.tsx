@@ -23,10 +23,8 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground dark">
         <Providers>
-          <WithSidebar>
-            <Nav />
-            {children}
-          </WithSidebar>
+          <Nav />
+          <WithSidebar>{children}</WithSidebar>
         </Providers>
       </body>
     </html>
