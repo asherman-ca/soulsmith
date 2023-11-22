@@ -43,6 +43,7 @@ const WithSidebar: FC<WithSidebarProps> = ({ children }) => {
           {links.map((link) => {
             return (
               <Link
+                key={link.url}
                 href={link.url}
                 className={cn(
                   "flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
