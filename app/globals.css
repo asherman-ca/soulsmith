@@ -13,3 +13,7 @@
 .grayborder {
   @apply border-gray-500;
 }
+
+.buttonfont {
+  @apply text-sm font-semibold;
+}

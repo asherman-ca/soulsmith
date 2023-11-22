@@ -41,10 +41,12 @@ const WithSidebar: FC<WithSidebarProps> = async ({ children }) => {
       <div className="grayborder flex flex-col border-r pb-6">
         <Link
           href="/"
-          className="grayborder flex h-[90px] items-center gap-2 border-b px-6 text-xl font-medium"
+          className="grayborder flex h-[80px] items-center gap-1 border-b px-6 text-lg font-medium"
         >
           <IconDiamond className="h-[30px] w-[30px]" />
-          SoulSmith
+          <div>
+            <span className="font-bold">SOUL</span>SMITH
+          </div>
         </Link>
         <div className="">
           {links.map((link) => {

@@ -38,16 +38,16 @@ export default async function AuthButton() {
     </div>
   ) : (
     <div className="flex items-center gap-4">
-      Sign In
       <Button
         as={Link}
-        radius="full"
+        radius="sm"
         variant="faded"
-        className="p-2"
+        className="buttonfont px-4"
         href="/login"
-        isIconOnly
+        // isIconOnly
       >
-        <IconLogin />
+        <IconLogin className="h-4 w-4 rotate-180" />
+        Login
       </Button>
     </div>
   );
