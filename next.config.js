@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ["taamuyhgrnrtoqwybwtb.supabase.co", "static.wikia.nocookie.net"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

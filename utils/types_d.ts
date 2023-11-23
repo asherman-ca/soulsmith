@@ -11,5 +11,5 @@ declare interface Character {
   name: string;
   description: string;
   image: string;
-  // skills: Skill[];
+  tags: string;
 }

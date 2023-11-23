@@ -19,8 +19,16 @@ const page = async () => {
   const skills = await supabase.from("skills").select("*");
   const skillData: Skill[] = skills.data!;
 
-  const characters = await supabase.from("characters").select("*");
-  const characterData: Character[] = characters.data!;
+  // const characters = await supabase.from("characters").select("*");
+  // const characterData: Character[] = characters.data!;
+
+  const { data, error } = await supabase.from("characters").select(`
+      *,
+      weapons (
+        *
+      )
+    `);
+  const characterData: Character[] = data!;
 
   return (
     <main className="page-container">
