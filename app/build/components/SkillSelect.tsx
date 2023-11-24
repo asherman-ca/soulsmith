@@ -9,54 +9,60 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 
-interface CharacterSelectProps {
-  characters: Character[];
+interface SkillSelectProps {
+  skills: Skill[];
   setValue: any;
+  watch: any;
+  activePosition: number;
 }
 
-const CharacterSelect: FC<CharacterSelectProps> = ({
-  characters,
+const SkillSelect: FC<SkillSelectProps> = ({
+  skills,
   setValue,
+  activePosition,
+  watch,
 }) => {
   return (
     <ModalContent>
       {(onClose) => (
         <>
-          <ModalHeader>Choose Hero</ModalHeader>
+          <ModalHeader>Choose Skill</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-4 gap-4">
-              {characters.map((character: Character) => (
+              {skills.map((skill) => (
                 <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
-                  {/* <h2 className="truncate text-sm font-semibold">
-                    {character.name}
-                  </h2> */}
                   <Tooltip
                     placement="bottom"
                     color="default"
                     classNames={{
-                      base: ["border-2 rounded-md border-gray-500 w-44"],
+                      base: ["border-2 rounded-md border-gray-500 w-60"],
                       content: ["p-2 rounded-md text-xs"],
                     }}
                     content={
-                      <div>
-                        <h1 className="text-base font-medium">
-                          {character.name}
-                        </h1>
-                        <h2>{character.tags}</h2>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-start justify-between">
+                          <h1 className="text-base font-medium">
+                            {skill.name}
+                          </h1>
+                          <p>{skill.cooldown}</p>
+                        </div>
+                        <p>{skill.description}</p>
                       </div>
                     }
                   >
                     <Image
                       onClick={() => {
-                        setValue("character", character);
-                        setValue("weapon", {});
                         onClose();
+                        setValue("skills", {
+                          ...watch("skills"),
+                          [activePosition]: skill,
+                        });
                       }}
-                      src={character.image}
+                      src={skill.image}
                       className="h-full rounded-xl border-4 border-slate-300/30 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
                       height={100}
                       width={100}
-                      alt="character image"
+                      alt="weapon image"
                     />
                   </Tooltip>
                 </div>
@@ -74,4 +80,4 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
   );
 };
 
-export default CharacterSelect;
+export default SkillSelect;

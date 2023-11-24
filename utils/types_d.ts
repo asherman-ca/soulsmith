@@ -10,6 +10,7 @@ declare interface Skill {
   name: string;
   tags: string;
   image: string;
+  cooldown: number;
 }
 
 declare interface Character {

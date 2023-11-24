@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 interface WeaponSelectProps {
   characters: Character[];
@@ -32,15 +31,12 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
                 .filter((char) => char.name === watch("character").name)[0]
                 .weapons.map((weapon) => (
                   <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
-                    <h2 className="truncate text-sm font-semibold">
-                      {weapon.name}
-                    </h2>
                     <Tooltip
                       placement="bottom"
                       color="default"
                       classNames={{
                         base: ["border-2 rounded-md border-gray-500"],
-                        content: ["p-2 rounded-md"],
+                        content: ["p-2 rounded-md text-xs"],
                       }}
                       content={
                         <div>
@@ -61,7 +57,7 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
                           onClose();
                         }}
                         src={weapon.image}
-                        className="h-full rounded-md border-4 border-slate-300/30 transition-all group-hover:scale-95"
+                        className="h-full rounded-xl border-4 border-slate-300/30 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
                         height={100}
                         width={100}
                         alt="weapon image"
