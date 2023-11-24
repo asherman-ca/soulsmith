@@ -159,14 +159,34 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
             className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
           >
             {watch("skills")[1]?.image && (
-              <Image
-                onClick={() => handleModalChange("skill", 1)}
-                className="h-full w-full rounded-md"
-                src={watch("skills")[1]?.image}
-                height={100}
-                width={100}
-                alt="weapon image"
-              />
+              <Tooltip
+                placement="bottom"
+                color="default"
+                classNames={{
+                  base: ["border-2 rounded-md border-gray-500 w-60"],
+                  content: ["p-2 rounded-md text-xs"],
+                }}
+                content={
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-start justify-between">
+                      <h1 className="text-base font-medium">
+                        {watch("skills")[1]?.name}
+                      </h1>
+                      <p>{watch("skills")[1]?.cooldown}</p>
+                    </div>
+                    <p>{watch("skills")[1]?.description}</p>
+                  </div>
+                }
+              >
+                <Image
+                  onClick={() => handleModalChange("skill", 1)}
+                  className="h-full w-full rounded-md"
+                  src={watch("skills")[1]?.image}
+                  height={100}
+                  width={100}
+                  alt="weapon image"
+                />
+              </Tooltip>
             )}
           </div>
 
