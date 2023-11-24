@@ -47,9 +47,11 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
                           <h1 className="text-base font-medium">
                             {weapon.name}
                           </h1>
-                          {weapon.stats.split(",").map((weaponStat: string) => {
-                            return <p key={weaponStat}>{weaponStat}</p>;
-                          })}
+                          {weapon.stats
+                            ?.split(",")
+                            .map((weaponStat: string) => {
+                              return <p key={weaponStat}>{weaponStat}</p>;
+                            })}
                         </div>
                       }
                     >
@@ -59,7 +61,7 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
                           onClose();
                         }}
                         src={weapon.image}
-                        className="h-full transition-all group-hover:scale-105"
+                        className="h-full rounded-md border-4 border-slate-300/30 transition-all group-hover:scale-95"
                         height={100}
                         width={100}
                         alt="weapon image"

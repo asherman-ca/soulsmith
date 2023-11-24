@@ -70,7 +70,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           <h2 className="font-semibold">CHARACTER</h2>
           <div
             onClick={() => handleModalChange("character")}
-            className="h-24 w-24 cursor-pointer border"
+            className="h-24 w-24 cursor-pointer rounded-md border-4 border-slate-300/30"
           >
             {watch("character").image && (
               <Tooltip
@@ -91,7 +91,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
               >
                 <Image
                   onClick={() => handleModalChange("character")}
-                  className="h-full w-full"
+                  className="h-full w-full rounded-md"
                   src={watch("character").image}
                   height={100}
                   width={100}
@@ -105,7 +105,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           <div className="flex flex-col gap-2">
             <h2 className="font-semibold">WEAPON</h2>
             <div
-              className="h-24 w-24 cursor-pointer border"
+              className="h-24 w-24 cursor-pointer rounded-md border-4 border-slate-300/30"
               onClick={() => handleModalChange("weapon")}
             >
               {watch("weapon").image && (
@@ -122,7 +122,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
                         {watch("weapon").name}
                       </h1>
                       {watch("weapon")
-                        .stats.split(",")
+                        .stats?.split(",")
                         .map((weaponStat: string) => {
                           return <p key={weaponStat}>{weaponStat}</p>;
                         })}
@@ -131,7 +131,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
                 >
                   <Image
                     onClick={() => handleModalChange("weapon")}
-                    className="h-full w-full"
+                    className="h-full w-full rounded-md"
                     src={watch("weapon").image}
                     height={100}
                     width={100}

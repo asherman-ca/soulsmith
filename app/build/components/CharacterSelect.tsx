@@ -53,7 +53,7 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
                         onClose();
                       }}
                       src={character.image}
-                      className="h-full transition-all group-hover:scale-105"
+                      className="h-full rounded-md border-4 border-slate-300/30 transition-all group-hover:scale-95"
                       height={100}
                       width={100}
                       alt="character image"
