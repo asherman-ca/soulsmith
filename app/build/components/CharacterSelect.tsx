@@ -49,6 +49,7 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
                     <Image
                       onClick={() => {
                         setValue("character", character);
+                        setValue("weapon", {});
                         onClose();
                       }}
                       src={character.image}

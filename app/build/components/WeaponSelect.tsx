@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface WeaponSelectProps {
   characters: Character[];
@@ -20,10 +21,6 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
   watch,
   setValue,
 }) => {
-  console.log(
-    characters.filter((char) => char.name === watch("character").name)[0]
-      .weapons,
-  );
   return (
     <ModalContent>
       {(onClose) => (
