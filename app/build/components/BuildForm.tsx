@@ -1,17 +1,11 @@
 "use client";
 import { FC, useState } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Tooltip,
-} from "@nextui-org/react";
+import { Modal, Button, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import WeaponSelect from "./WeaponSelect";
+import CharacterSelect from "./CharacterSelect";
+import { flushSync } from "react-dom";
 
 interface BuildFormProps {
   skills: Skill[];
@@ -26,19 +20,21 @@ type Inputs = {
   weapon: {
     image: string;
     name: string;
+    stats: string;
   };
 };
 
 const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
-  const [isCharacterSelectOpen, setIsCharacterSelectOpen] =
-    useState<boolean>(false);
-  const onCharacterOpenChange = (open: boolean) => {
-    setIsCharacterSelectOpen((p) => !p);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>("character");
+  const onModalOpenChange = (open: boolean) => {
+    setIsModalOpen((p) => !p);
   };
-
-  const [isWeaponSelectOpen, setIsWeaponSelectOpen] = useState<boolean>(false);
-  const onWeaponOpenChange = (open: boolean) => {
-    setIsWeaponSelectOpen((p) => !p);
+  const handleModalChange = (type: string) => {
+    setModalType(type);
+    flushSync(() => {
+      setIsModalOpen(true);
+    });
   };
 
   const {
@@ -58,6 +54,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
       weapon: {
         image: "",
         name: "",
+        stats: "",
       },
       skills: [],
     },
@@ -67,127 +64,85 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
 
   return (
     <div className="flex flex-col gap-4 bg-gray-800 p-4 text-sm">
-      <div className="flex flex-col gap-2">
-        <h2 className="font-semibold">CHARACTER</h2>
-        <div
-          onClick={() => setIsCharacterSelectOpen(true)}
-          className="h-24 w-24 cursor-pointer border"
-        >
-          {watch("character").image && (
-            <Tooltip
-              placement="bottom"
-              color="default"
-              classNames={{
-                base: ["border-2 rounded-md border-gray-500 w-44"],
-                content: ["p-2 rounded-md"],
-              }}
-              content={
-                <div>
-                  <h1 className="text-base font-medium">
-                    {watch("character").name}
-                  </h1>
-                  <h2>{watch("character").tags}</h2>
-                </div>
-              }
-            >
-              <Image
-                onClick={() => setIsCharacterSelectOpen(true)}
-                className="h-full w-full"
-                src={watch("character").image}
-                height={100}
-                width={100}
-                alt=""
-              />
-            </Tooltip>
-          )}
-        </div>
-        <Modal
-          isOpen={isCharacterSelectOpen}
-          onOpenChange={onCharacterOpenChange}
-        >
-          <WeaponSelect characters={characters} watch={watch} />
-          {/* <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader>Choose Hero</ModalHeader>
-                <ModalBody>
-                  <div className="grid grid-cols-4 gap-4">
-                    {characters.map((character: Character) => (
-                      <div
-                        className="group flex cursor-pointer flex-col items-start gap-2 truncate"
-                        onClick={() => {
-                          setValue("character", character);
-                          onClose();
-                        }}
-                      >
-                        <h2 className="truncate text-sm font-semibold">
-                          {character.name}
-                        </h2>
-                        <Image
-                          src={character.image}
-                          className="h-full transition-all group-hover:scale-105"
-                          height={100}
-                          width={100}
-                          alt="character image"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button variant="ghost" onClick={onClose}>
-                    Close
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent> */}
-        </Modal>
-      </div>
-      {/* Weapon Select */}
-      {watch("character").name && (
+      {/* Character and weapon select */}
+      <div className="flex items-center gap-4">
         <div className="flex flex-col gap-2">
-          <h2 className="font-semibold">WEAPON</h2>
+          <h2 className="font-semibold">CHARACTER</h2>
           <div
+            onClick={() => handleModalChange("character")}
             className="h-24 w-24 cursor-pointer border"
-            onClick={() => setIsWeaponSelectOpen(true)}
           >
-            {watch("weapon").image && (
-              <Image
-                onClick={() => setIsWeaponSelectOpen(true)}
-                className="h-full w-full"
-                src={watch("weapon").image}
-                height={100}
-                width={100}
-                alt="weapon image"
-              />
+            {watch("character").image && (
+              <Tooltip
+                placement="bottom"
+                color="default"
+                classNames={{
+                  base: ["border-2 rounded-md border-gray-500 w-44"],
+                  content: ["p-2 rounded-md"],
+                }}
+                content={
+                  <div>
+                    <h1 className="text-base font-medium">
+                      {watch("character").name}
+                    </h1>
+                    <h2>{watch("character").tags}</h2>
+                  </div>
+                }
+              >
+                <Image
+                  onClick={() => handleModalChange("character")}
+                  className="h-full w-full"
+                  src={watch("character").image}
+                  height={100}
+                  width={100}
+                  alt=""
+                />
+              </Tooltip>
             )}
           </div>
-          <Modal isOpen={isWeaponSelectOpen} onOpenChange={onWeaponOpenChange}>
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader>Choose Weapon</ModalHeader>
-                  <ModalBody>
-                    {characters
-                      .filter(
-                        (char) => char.name === watch("character").name,
-                      )[0]
-                      .weapons.map((weapon) => (
-                        <div>{weapon.name}</div>
-                      ))}
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button variant="ghost" onClick={onClose}>
-                      Close
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
         </div>
-      )}
+        {watch("character").name && (
+          <div className="flex flex-col gap-2">
+            <h2 className="font-semibold">WEAPON</h2>
+            <div
+              className="h-24 w-24 cursor-pointer border"
+              onClick={() => handleModalChange("weapon")}
+            >
+              {watch("weapon").image && (
+                <Tooltip
+                  placement="bottom"
+                  color="default"
+                  classNames={{
+                    base: ["border-2 rounded-md border-gray-500"],
+                    content: ["p-2 rounded-md"],
+                  }}
+                  content={
+                    <div>
+                      <h1 className="text-base font-medium">
+                        {watch("weapon").name}
+                      </h1>
+                      {watch("weapon")
+                        .stats.split(",")
+                        .map((weaponStat: string) => {
+                          return <p key={weaponStat}>{weaponStat}</p>;
+                        })}
+                    </div>
+                  }
+                >
+                  <Image
+                    onClick={() => handleModalChange("weapon")}
+                    className="h-full w-full"
+                    src={watch("weapon").image}
+                    height={100}
+                    width={100}
+                    alt="weapon image"
+                  />
+                </Tooltip>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
       {/* Skill Select */}
       <div>Skills</div>
       {/* Rune Select */}
@@ -200,6 +155,18 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         </div>
       ))} */}
       <Button onClick={handleSubmit(onSubmit)}>Create</Button>
+      <Modal isOpen={isModalOpen} onOpenChange={onModalOpenChange}>
+        {modalType === "character" && (
+          <CharacterSelect characters={characters} setValue={setValue} />
+        )}
+        {modalType === "weapon" && (
+          <WeaponSelect
+            characters={characters}
+            watch={watch}
+            setValue={setValue}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
