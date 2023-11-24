@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
+import WeaponSelect from "./WeaponSelect";
 
 interface BuildFormProps {
   skills: Skill[];
@@ -104,7 +105,8 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           isOpen={isCharacterSelectOpen}
           onOpenChange={onCharacterOpenChange}
         >
-          <ModalContent>
+          <WeaponSelect characters={characters} watch={watch} />
+          {/* <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader>Choose Hero</ModalHeader>
@@ -139,7 +141,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
                 </ModalFooter>
               </>
             )}
-          </ModalContent>
+          </ModalContent> */}
         </Modal>
       </div>
       {/* Weapon Select */}
@@ -166,7 +168,15 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
               {(onClose) => (
                 <>
                   <ModalHeader>Choose Weapon</ModalHeader>
-                  <ModalBody>Beans</ModalBody>
+                  <ModalBody>
+                    {characters
+                      .filter(
+                        (char) => char.name === watch("character").name,
+                      )[0]
+                      .weapons.map((weapon) => (
+                        <div>{weapon.name}</div>
+                      ))}
+                  </ModalBody>
                   <ModalFooter>
                     <Button variant="ghost" onClick={onClose}>
                       Close

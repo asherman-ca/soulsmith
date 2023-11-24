@@ -1,3 +1,9 @@
+declare interface Weapon {
+  id: number;
+  name: string;
+  image: string;
+}
+
 declare interface Skill {
   id: number;
   description: string;
@@ -12,4 +18,5 @@ declare interface Character {
   description: string;
   image: string;
   tags: string;
+  weapons: any[];
 }
