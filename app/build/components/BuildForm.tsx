@@ -7,6 +7,7 @@ import WeaponSelect from "./WeaponSelect";
 import CharacterSelect from "./CharacterSelect";
 import { flushSync } from "react-dom";
 import SkillSelect from "./SkillSelect";
+import SkillTile from "./SkillTile";
 
 interface BuildFormProps {
   skills: Skill[];
@@ -154,89 +155,38 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
       <div className="flex flex-col gap-4">
         <h2 className="font-bold">SKILLS</h2>
         <div className="flex gap-4">
-          <div
-            onClick={() => handleModalChange("skill", 1)}
-            className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
-          >
-            {watch("skills")[1]?.image && (
-              <Tooltip
-                placement="bottom"
-                color="default"
-                classNames={{
-                  base: ["border-2 rounded-md border-gray-500 w-60"],
-                  content: ["p-2 rounded-md text-xs"],
-                }}
-                content={
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-start justify-between">
-                      <h1 className="text-base font-medium">
-                        {watch("skills")[1]?.name}
-                      </h1>
-                      <p>{watch("skills")[1]?.cooldown}</p>
-                    </div>
-                    <p>{watch("skills")[1]?.description}</p>
-                  </div>
-                }
-              >
-                <Image
-                  onClick={() => handleModalChange("skill", 1)}
-                  className="h-full w-full rounded-md"
-                  src={watch("skills")[1]?.image}
-                  height={100}
-                  width={100}
-                  alt="weapon image"
-                />
-              </Tooltip>
-            )}
-          </div>
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={1}
+          />
 
-          <div
-            onClick={() => handleModalChange("skill", 2)}
-            className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
-          >
-            {watch("skills")[2]?.image && (
-              <Image
-                onClick={() => handleModalChange("skill", 2)}
-                className="h-full w-full rounded-md"
-                src={watch("skills")[2]?.image}
-                height={100}
-                width={100}
-                alt="weapon image"
-              />
-            )}
-          </div>
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={2}
+          />
 
-          <div
-            onClick={() => handleModalChange("skill", 3)}
-            className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
-          >
-            {watch("skills")[3]?.image && (
-              <Image
-                onClick={() => handleModalChange("skill", 3)}
-                className="h-full w-full rounded-md"
-                src={watch("skills")[3]?.image}
-                height={100}
-                width={100}
-                alt="weapon image"
-              />
-            )}
-          </div>
-
-          <div
-            onClick={() => handleModalChange("skill", 4)}
-            className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
-          >
-            {watch("skills")[4]?.image && (
-              <Image
-                onClick={() => handleModalChange("skill", 4)}
-                className="h-full w-full rounded-md"
-                src={watch("skills")[4]?.image}
-                height={100}
-                width={100}
-                alt="weapon image"
-              />
-            )}
-          </div>
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={3}
+          />
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={4}
+          />
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={5}
+          />
+          <SkillTile
+            handleModalChange={handleModalChange}
+            watch={watch}
+            skillPosition={6}
+          />
         </div>
       </div>
       {/* Rune Select */}

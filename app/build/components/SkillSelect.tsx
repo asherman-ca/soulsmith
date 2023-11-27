@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   ModalContent,
   ModalHeader,
@@ -6,8 +6,10 @@ import {
   ModalFooter,
   Button,
   Tooltip,
+  Input,
 } from "@nextui-org/react";
 import Image from "next/image";
+import { IconSearch } from "@tabler/icons-react";
 
 interface SkillSelectProps {
   skills: Skill[];
@@ -22,14 +24,35 @@ const SkillSelect: FC<SkillSelectProps> = ({
   activePosition,
   watch,
 }) => {
+  const [filter, setFilter] = useState<string>("");
+  const displaySkills = !filter
+    ? skills.sort((a, b) => a.name.localeCompare(b.name))
+    : skills
+        .filter((skill) => {
+          return (
+            skill.name.toLowerCase().includes(filter.toLowerCase()) ||
+            skill.tags.toLowerCase().includes(filter.toLowerCase())
+          );
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <ModalContent>
       {(onClose) => (
         <>
-          <ModalHeader>Choose Skill</ModalHeader>
+          <ModalHeader className="grayborder border-b">
+            Skill Selection
+          </ModalHeader>
+          <ModalHeader className="grayborder border-b">
+            <Input
+              startContent={<IconSearch />}
+              placeholder="Tag or Name..."
+              onChange={(event) => setFilter(event.target.value)}
+            />
+          </ModalHeader>
           <ModalBody>
-            <div className="grid grid-cols-4 gap-4">
-              {skills.map((skill) => (
+            <div className="grid grid-cols-5 gap-4 pt-2">
+              {displaySkills.map((skill) => (
                 <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
                   <Tooltip
                     placement="bottom"
