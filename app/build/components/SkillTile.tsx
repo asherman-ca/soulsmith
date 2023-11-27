@@ -28,11 +28,11 @@ const SkillTile: FC<SkillTileProps> = ({
           }}
           content={
             <div className="flex flex-col gap-1">
-              <div className="flex items-start justify-between">
-                <h1 className="text-base font-medium">
+              <div className="flex items-end justify-between font-medium">
+                <h1 className="text-base">
                   {watch("skills")[skillPosition]?.name}
                 </h1>
-                <p>{watch("skills")[skillPosition]?.cooldown}</p>
+                <p>{watch("skills")[skillPosition]?.cooldown}s</p>
               </div>
               <p>{watch("skills")[skillPosition]?.description}</p>
             </div>

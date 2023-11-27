@@ -63,11 +63,9 @@ const SkillSelect: FC<SkillSelectProps> = ({
                     }}
                     content={
                       <div className="flex flex-col gap-1">
-                        <div className="flex items-start justify-between">
-                          <h1 className="text-base font-medium">
-                            {skill.name}
-                          </h1>
-                          <p>{skill.cooldown}</p>
+                        <div className="flex items-end justify-between font-medium">
+                          <h1 className="text-base">{skill.name}</h1>
+                          <p>{skill.cooldown}s</p>
                         </div>
                         <p>{skill.description}</p>
                       </div>
