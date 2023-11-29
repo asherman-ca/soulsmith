@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const page = async () => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
@@ -25,7 +27,7 @@ const page = async () => {
     )
     .eq("user", user.id);
 
-  console.log("builds", data[0]);
+  const result: any = data![0];
 
   return (
     <div className="page-container">

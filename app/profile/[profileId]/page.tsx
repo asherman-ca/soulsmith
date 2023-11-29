@@ -3,6 +3,8 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 type ProfileProps = {
   params: {
     profileId: string;

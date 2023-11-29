@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export default async function Index() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);

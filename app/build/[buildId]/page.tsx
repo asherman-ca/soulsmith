@@ -10,6 +10,8 @@ type BuildProps = {
   };
 };
 
+export const dynamic = "force-dynamic";
+
 const page = async ({ params: { buildId } }: BuildProps) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
