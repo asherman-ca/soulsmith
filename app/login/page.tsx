@@ -49,6 +49,7 @@ export default function Login() {
     if (error) {
       toast.error("Authentication failed");
     } else {
+      toast.success("Check your email for the confirmation link");
       router.refresh();
     }
   };
@@ -69,8 +70,8 @@ export default function Login() {
 
   const handleGuest = async () => {
     const payload = {
-      email: "liquifyguest@yahoo.com",
-      password: "liquifyguest",
+      email: "soulsmithguest@yahoo.com",
+      password: "password",
     };
     const { error } = await supabase.auth.signInWithPassword(payload);
     if (error) {
