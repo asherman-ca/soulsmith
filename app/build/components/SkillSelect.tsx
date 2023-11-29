@@ -26,7 +26,7 @@ const SkillSelect: FC<SkillSelectProps> = ({
 }) => {
   const [filter, setFilter] = useState<string>("");
   const displaySkills = !filter
-    ? skills.sort((a, b) => a.name.localeCompare(b.name))
+    ? skills.sort((a, b) => a.tags.localeCompare(b.tags))
     : skills
         .filter((skill) => {
           return (
