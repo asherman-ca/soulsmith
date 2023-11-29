@@ -17,13 +17,15 @@ const page = async ({ params: { buildId } }: BuildProps) => {
     .from("builds")
     .select(
       `*,
-      build_skills(skill:skills(*)),
+      skills:build_skills(skill:skills(*)),
       character:characters(*),
       weapon:weapons(*)`,
     )
     .eq("id", buildId);
 
   const result: BuildData = buildData![0];
+
+  console.log(result.skills);
 
   return (
     <div className="page-container">
@@ -43,36 +45,40 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                   />
                 </div>
               </div>
-              <div className="h-16 w-16 rounded-md border-4 border-slate-300/30">
-                <Image
-                  className="rounded-md"
-                  src={result.weapon.image}
-                  alt="weapon image"
-                  height={100}
-                  width={100}
-                />
-              </div>
+              {result.weapon?.image && (
+                <div className="h-16 w-16 rounded-md border-4 border-slate-300/30">
+                  <Image
+                    className="rounded-md"
+                    src={result.weapon.image}
+                    alt="weapon image"
+                    height={100}
+                    width={100}
+                  />
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col gap-4">
-              <h2 className="font-bold">SKILLS</h2>
-              <div className="flex gap-4">
-                {result.build_skills.map(({ skill }) => (
-                  <div
-                    key={skill.id}
-                    className="h-16 w-16 rounded-md border-4 border-slate-300/30"
-                  >
-                    <Image
-                      className="rounded-md"
-                      src={skill.image}
-                      alt="skill image"
-                      height={100}
-                      width={100}
-                    />
-                  </div>
-                ))}
+            {result.skills.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <h2 className="font-bold">SKILLS</h2>
+                <div className="flex gap-4">
+                  {result.skills.map(({ skill }) => (
+                    <div
+                      key={skill.id}
+                      className="h-16 w-16 rounded-md border-4 border-slate-300/30"
+                    >
+                      <Image
+                        className="rounded-md"
+                        src={skill.image}
+                        alt="skill image"
+                        height={100}
+                        width={100}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

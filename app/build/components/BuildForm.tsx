@@ -91,17 +91,21 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
 
     if (error) return;
 
-    const { data: skillResponse, error: skillError } = await supabase
-      .from("build_skills")
-      .insert([
-        {
-          build: data[0].id,
-          skill: formData.skills[1].id,
-        },
-      ]);
-    // console.log(data);
+    const skillPayload = Object.keys(formData.skills)
+      .filter((key: any) => {
+        return formData.skills[key].id !== undefined;
+      })
+      .map((key: any) => ({
+        build: data[0].id,
+        skill: formData.skills[key].id,
+        position: Number(key),
+      }));
 
-    // toast.success("Build created!");
+    if (skillPayload.length > 0) {
+      const { data: skillResponse, error: skillError } = await supabase
+        .from("build_skills")
+        .insert([...skillPayload]);
+    }
 
     router.push(`/build/${data[0].id}`);
   };
@@ -207,7 +211,6 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         {/* Rune Select */}
         <div className="flex flex-col gap-4">
           <h2 className="font-bold">RUNES</h2>
-          {/* <div className="flex gap-4"></div> */}
         </div>
 
         <Modal isOpen={isModalOpen} onOpenChange={onModalOpenChange}>

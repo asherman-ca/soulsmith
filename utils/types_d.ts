@@ -27,6 +27,6 @@ declare interface BuildData {
   name: string;
   description: string;
   weapon: Weapon;
-  build_skills: { skill: Skill }[];
+  skills: { skill: Skill }[];
   character: Character;
 }
