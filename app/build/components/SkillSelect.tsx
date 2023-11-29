@@ -24,7 +24,9 @@ const SkillSelect: FC<SkillSelectProps> = ({
   activePosition,
   watch,
 }) => {
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>(
+    watch("character").element || "",
+  );
   const displaySkills = !filter
     ? skills.sort((a, b) => a.tags.localeCompare(b.tags))
     : skills
@@ -46,7 +48,8 @@ const SkillSelect: FC<SkillSelectProps> = ({
           <ModalHeader className="grayborder border-b">
             <Input
               startContent={<IconSearch />}
-              placeholder="Tag or Name..."
+              // placeholder={filter || "Tag or Name..."}
+              value={filter}
               onChange={(event) => setFilter(event.target.value)}
             />
           </ModalHeader>
