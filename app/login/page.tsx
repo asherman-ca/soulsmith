@@ -62,9 +62,10 @@ export default function Login() {
     const { error } = await supabase.auth.signInWithPassword(payload);
     if (error) {
       toast.error("Authentication failed");
+      console.log("error", error);
     } else {
-      router.refresh();
       router.push("/");
+      router.refresh();
     }
   };
 
@@ -78,8 +79,8 @@ export default function Login() {
       console.log("error", error);
       toast.error("Authentication failed");
     } else {
-      router.refresh();
       router.push("/");
+      router.refresh();
     }
   };
 
