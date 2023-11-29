@@ -2,9 +2,8 @@
 import { IconBadges, IconHammer, IconUserCircle } from "@tabler/icons-react";
 import { FC } from "react";
 import { IconHome } from "@tabler/icons-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/utils/tw";
+import SideBarLink from "./SideBarLink";
 
 interface WithSidebarProps {
   children: React.ReactNode;
@@ -42,19 +41,7 @@ const WithSidebar: FC<WithSidebarProps> = ({ children }) => {
         <div className="flex flex-col gap-2">
           {links.map((link) => {
             return (
-              <Link
-                key={link.url}
-                href={link.url}
-                className={cn(
-                  "flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
-                  {
-                    "bg-[#3F3F45]": pathname === link.url,
-                  },
-                )}
-              >
-                {link.icon}
-                <span>{link.name}</span>
-              </Link>
+              <SideBarLink key={link.url} link={link} pathname={pathname} />
             );
           })}
         </div>

@@ -9,7 +9,18 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-20deg)" },
+          "50%": { transform: "rotate(20deg)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 500ms linear",
+        wiggleinfinite: "wiggle 200ms ease-in-out infinite",
+      },
+    },
   },
   darkMode: "class",
   plugins: [nextui()],
