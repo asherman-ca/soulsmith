@@ -1,6 +1,6 @@
 "use client";
 import { FC, useState } from "react";
-import { Modal, Button, Tooltip, Input } from "@nextui-org/react";
+import { Modal, Button, Tooltip, Input, Textarea } from "@nextui-org/react";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import WeaponSelect from "./WeaponSelect";
@@ -8,6 +8,8 @@ import CharacterSelect from "./CharacterSelect";
 import { flushSync } from "react-dom";
 import SkillSelect from "./SkillSelect";
 import SkillTile from "./SkillTile";
+import { createClient } from "@/utils/supabase/client";
+import { toast } from "sonner";
 
 interface BuildFormProps {
   skills: Skill[];
@@ -18,7 +20,7 @@ type Inputs = {
   name: string;
   description?: string;
   character: Character;
-  skills: Skill[];
+  skills: { [key: number]: Skill };
   weapon: {
     image: string;
     name: string;
@@ -27,6 +29,7 @@ type Inputs = {
 };
 
 const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
+  const supabase = createClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("character");
   const [activePosition, setActivePosition] = useState<number>(1);
@@ -48,6 +51,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
     formState: { errors },
     setValue,
     watch,
+    register,
   } = useForm<Inputs>({
     defaultValues: {
       name: "",
@@ -62,20 +66,43 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         name: "",
         stats: "",
       },
-      skills: [],
+      skills: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {} },
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    const { data, error } = await supabase
+      .from("builds")
+      .insert([
+        {
+          name: formData.name,
+          description: formData.description,
+          type: formData.character.name,
+        },
+      ])
+      .select();
 
-  // console.log(watch("skills")[1]);
+    if (error) return;
+
+    const { data: skillResponse, error: skillError } = await supabase
+      .from("build_skills")
+      .insert([
+        {
+          build: data[0].id,
+          skill: formData.skills[1].id,
+        },
+      ]);
+    // console.log(data);
+
+    toast.success("Build created!");
+  };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-8 bg-gray-800 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
         {/* Character and weapon select */}
         <div className="flex items-center gap-4">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <h2 className="font-bold">CHARACTER</h2>
             <div
               onClick={() => handleModalChange("character")}
@@ -156,36 +183,16 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         <div className="flex flex-col gap-4">
           <h2 className="font-bold">SKILLS</h2>
           <div className="flex gap-4">
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={1}
-            />
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={2}
-            />
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={3}
-            />
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={4}
-            />
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={5}
-            />
-            <SkillTile
-              handleModalChange={handleModalChange}
-              watch={watch}
-              skillPosition={6}
-            />
+            {Object.keys(watch("skills")).map((skillPosition) => {
+              return (
+                <SkillTile
+                  key={skillPosition}
+                  handleModalChange={handleModalChange}
+                  watch={watch}
+                  skillPosition={parseInt(skillPosition)}
+                />
+              );
+            })}
           </div>
         </div>
         {/* Rune Select */}
@@ -215,10 +222,19 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           )}
         </Modal>
       </div>
-      <div className="flex flex-col gap-8 bg-gray-800 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
         <h2 className="font-bold">BUILD DETAILS</h2>
-        <Input label="Build Name" />
-        <Input placeholder="Description" />
+        <Input
+          label="Build Name"
+          {...register("name", { required: "Build name is required" })}
+          errorMessage={errors.name?.message}
+        />
+        <Textarea
+          label="Description"
+          // onChange={(e) => setValue("description", e.target.value)}
+          {...register("description")}
+        />
+        {/* <p className="whitespace-pre-line">{watch("description")}</p> */}
         <Button onClick={handleSubmit(onSubmit)}>Create</Button>
       </div>
     </div>

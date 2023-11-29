@@ -26,7 +26,10 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
           <ModalBody>
             <div className="grid grid-cols-4 gap-4">
               {characters.map((character: Character) => (
-                <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
+                <div
+                  className="group flex cursor-pointer flex-col items-start gap-2 truncate"
+                  key={character.id}
+                >
                   {/* <h2 className="truncate text-sm font-semibold">
                     {character.name}
                   </h2> */}

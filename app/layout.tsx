@@ -1,6 +1,8 @@
 import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import { Providers } from "./providers";
+import { Toaster } from "sonner";
+
 import WithSidebar from "@/components/WithSidebar";
 import Nav from "@/components/nav/Nav";
 
@@ -23,6 +25,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground dark">
         <Providers>
+          <Toaster />
           <Nav />
           <WithSidebar>{children}</WithSidebar>
         </Providers>

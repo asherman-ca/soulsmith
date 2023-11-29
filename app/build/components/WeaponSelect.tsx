@@ -30,7 +30,10 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
               {characters
                 .filter((char) => char.name === watch("character").name)[0]
                 .weapons.map((weapon) => (
-                  <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
+                  <div
+                    className="group flex cursor-pointer flex-col items-start gap-2 truncate"
+                    key={weapon.id}
+                  >
                     <Tooltip
                       placement="bottom"
                       color="default"

@@ -50,10 +50,13 @@ const SkillSelect: FC<SkillSelectProps> = ({
               onChange={(event) => setFilter(event.target.value)}
             />
           </ModalHeader>
-          <ModalBody>
+          <ModalBody className="max-h-[400px] overflow-auto">
             <div className="grid grid-cols-5 gap-4 pt-2">
               {displaySkills.map((skill) => (
-                <div className="group flex cursor-pointer flex-col items-start gap-2 truncate">
+                <div
+                  className="group flex cursor-pointer flex-col items-start gap-2 truncate"
+                  key={skill.id}
+                >
                   <Tooltip
                     placement="bottom"
                     color="default"
