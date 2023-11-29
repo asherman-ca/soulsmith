@@ -29,4 +29,5 @@ declare interface BuildData {
   weapon: Weapon;
   skills: { skill: Skill }[];
   character: Character;
+  created_at: string;
 }
