@@ -10,6 +10,7 @@ import SkillSelect from "./SkillSelect";
 import SkillTile from "./SkillTile";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface BuildFormProps {
   skills: Skill[];
@@ -30,6 +31,7 @@ type Inputs = {
 };
 
 const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
+  const router = useRouter();
   const supabase = createClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>("character");
@@ -99,7 +101,9 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
       ]);
     // console.log(data);
 
-    toast.success("Build created!");
+    // toast.success("Build created!");
+
+    router.push(`/build/${data[0].id}`);
   };
 
   return (
