@@ -25,6 +25,7 @@ type Inputs = {
     image: string;
     name: string;
     stats: string;
+    id: number | null;
   };
 };
 
@@ -60,11 +61,13 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         name: "",
         image: "",
         tags: "",
+        id: null,
       },
       weapon: {
         image: "",
         name: "",
         stats: "",
+        id: null,
       },
       skills: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {} },
     },
@@ -78,6 +81,8 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           name: formData.name,
           description: formData.description,
           type: formData.character.name,
+          weapon: formData.weapon.id,
+          character: formData.character.id,
         },
       ])
       .select();

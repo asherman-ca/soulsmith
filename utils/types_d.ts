@@ -14,7 +14,7 @@ declare interface Skill {
 }
 
 declare interface Character {
-  id: number;
+  id: number | null;
   name: string;
   description: string;
   image: string;
