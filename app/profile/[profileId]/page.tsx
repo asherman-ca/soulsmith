@@ -32,6 +32,8 @@ const page = async ({ params: { profileId } }: ProfileProps) => {
 
   // console.log("builds", buildData);
 
+  const result: any = data![0];
+
   return (
     <div className="page-container">
       <div className="content-container">
@@ -43,7 +45,7 @@ const page = async ({ params: { profileId } }: ProfileProps) => {
           </span>
           <span className="flex items-center text-gray-300">
             <IconChevronRight height={16} width={16} />
-            {data![0].username || profileId}
+            {result.username || profileId}
           </span>
         </h3>
       </div>

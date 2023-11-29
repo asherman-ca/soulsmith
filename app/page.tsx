@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 
 export default async function Index() {
@@ -21,7 +22,15 @@ export default async function Index() {
 
   return (
     <main className="page-container">
-      <div className="content-container">beans</div>
+      <div className="content-container">
+        <h3 className="flex items-center text-xs" aria-label="builder header">
+          Soulstone Survivors
+          <span className="flex items-center text-gray-300">
+            <IconChevronRight height={16} width={16} />
+            Home
+          </span>
+        </h3>
+      </div>
     </main>
   );
 }
