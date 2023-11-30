@@ -10,6 +10,8 @@ interface BuildTileProps {
 }
 
 const BuildTile: FC<BuildTileProps> = ({ build }) => {
+  console.log("build", build);
+
   const dateString = build.created_at;
   const dateObject = new Date(dateString);
   const options: any = { year: "numeric", month: "short", day: "numeric" };
@@ -79,22 +81,30 @@ const BuildTile: FC<BuildTileProps> = ({ build }) => {
                 base: ["border-2 rounded-md border-gray-500"],
                 content: ["p-2 rounded-md text-xs"],
               }}
+              isDisabled={!build.weapon?.name}
               content={
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-base font-medium">{build.weapon.name}</h1>
-                  {build.weapon.stats.split(",").map((weaponStat: string) => {
-                    return <p key={weaponStat}>{weaponStat}</p>;
-                  })}
+                  <h1 className="text-base font-medium">
+                    {build.weapon?.name}
+                  </h1>
+                  {build.weapon?.stats &&
+                    build.weapon?.stats.split(",").map((weaponStat: string) => {
+                      return <p key={weaponStat}>{weaponStat}</p>;
+                    })}
                 </div>
               }
             >
-              <Image
-                className="h-16 w-16 rounded-md border-4 border-slate-300/30"
-                alt="skill image"
-                height={100}
-                width={100}
-                src={build.weapon.image}
-              />
+              {build.weapon?.image ? (
+                <Image
+                  className="h-16 w-16 rounded-md border-4 border-slate-300/30"
+                  alt="skill image"
+                  height={100}
+                  width={100}
+                  src={build.weapon?.image}
+                />
+              ) : (
+                <div className="h-16 w-16 rounded-md border-4 border-slate-300/30"></div>
+              )}
             </Tooltip>
           </div>
           <div className="flex gap-2">

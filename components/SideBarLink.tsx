@@ -21,15 +21,17 @@ const SideBarLink: FC<SideBarLinkProps> = ({ link, pathname }) => {
       className={cn(
         "group flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
         {
-          "bg-[#3F3F45]": pathname === link.url,
+          "disabled cursor-default bg-[#3F3F45] text-foreground-700":
+            pathname === link.url,
         },
+        { "hover:text-foreground-700": pathname !== link.url },
       )}
       // onClick={() => setEffect(true)}
     >
       {React.cloneElement(link.icon as React.ReactElement, {
-        className: `${
-          effect && "animate-wiggle"
-        } group-hover:animate-wiggleinfinite`,
+        className: `${effect && "animate-wiggle"} ${
+          pathname !== link.url && "group-hover:animate-wiggleinfinite"
+        }`,
         // onAnimationEnd: () => setEffect(false),
       })}
       <span>{link.name}</span>

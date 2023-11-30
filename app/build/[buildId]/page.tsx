@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import Image from "next/image";

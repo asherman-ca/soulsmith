@@ -5,6 +5,8 @@ import React from "react";
 import BuildForm from "./components/BuildForm";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 const page = async () => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
