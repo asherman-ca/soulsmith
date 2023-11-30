@@ -2,6 +2,7 @@ declare interface Weapon {
   id: number;
   name: string;
   image: string;
+  stats: string;
 }
 
 declare interface Skill {
