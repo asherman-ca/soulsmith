@@ -26,8 +26,6 @@ export default async function Index({
       .order("id", { ascending: false })
       .limit(100);
 
-    console.log("data", data);
-
     result = data!;
   } else {
     const { data, error } = await supabase
@@ -46,8 +44,6 @@ export default async function Index({
     .select("*");
 
   const result2: any = characterData!;
-
-  // console.log("res", result);
 
   return (
     <main className="page-container">

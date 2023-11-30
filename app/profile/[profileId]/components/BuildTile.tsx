@@ -1,3 +1,4 @@
+import LikeButton from "@/components/LikeButton";
 import { Tooltip } from "@nextui-org/react";
 import { IconHeart } from "@tabler/icons-react";
 import Image from "next/image";
@@ -7,11 +8,10 @@ import { toast } from "sonner";
 
 interface BuildTileProps {
   build: BuildData;
+  isInitiallyLiked?: boolean;
 }
 
-const BuildTile: FC<BuildTileProps> = ({ build }) => {
-  console.log("build", build);
-
+const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
   const dateString = build.created_at;
   const dateObject = new Date(dateString);
   const options: any = { year: "numeric", month: "short", day: "numeric" };
@@ -34,6 +34,8 @@ const BuildTile: FC<BuildTileProps> = ({ build }) => {
     );
     toast.success("Copied to clipboard");
   };
+
+  console.log("liked", isInitiallyLiked);
 
   return (
     <Link className="flex flex-col" href={`/build/${build.id}`}>
@@ -89,7 +91,9 @@ const BuildTile: FC<BuildTileProps> = ({ build }) => {
                   </h1>
                   {build.weapon?.stats &&
                     build.weapon?.stats.split(",").map((weaponStat: string) => {
-                      return <p key={weaponStat}>{weaponStat}</p>;
+                      return (
+                        <p key={`${build.id} - ${weaponStat}`}>{weaponStat}</p>
+                      );
                     })}
                 </div>
               }
@@ -141,13 +145,14 @@ const BuildTile: FC<BuildTileProps> = ({ build }) => {
               </div>
             ))}
           </div>
-          <button
+          {/* <button
             className="flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 hover:bg-red-600"
             onClick={handleClick}
           >
             <IconHeart className="h-5 w-5" />
             <p>42</p>
-          </button>
+          </button> */}
+          <LikeButton buildId={build.id} initialLike={isInitiallyLiked} />
         </div>
       </div>
       <div className="flex justify-between rounded-b-md bg-[#3F3F45]/75 p-2 text-xs">

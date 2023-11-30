@@ -12,7 +12,7 @@ export default async function Index() {
   const { data, error } = await supabase
     .from("builds")
     .select(
-      `*, skills:build_skills(skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
+      `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
     )
     .order("id", { ascending: false })
     .limit(100);
@@ -25,7 +25,22 @@ export default async function Index() {
 
   const result2: any = characterData!;
 
-  console.log("res", result);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let likes = null;
+
+  if (user) {
+    const { data: likesData, error: likesError } = await supabase
+      .from("build_likes")
+      .select("*")
+      .eq("user", user.id);
+
+    likes = likesData ? likesData.map((like) => like.build) : null;
+  }
+
+  // console.log("res", result);
 
   return (
     <main className="page-container">
@@ -40,7 +55,12 @@ export default async function Index() {
 
         <BuildTableNav />
 
-        <BuildTable builds={result} characters={result2} pathurl={"/"} />
+        <BuildTable
+          builds={result}
+          characters={result2}
+          pathurl={"/"}
+          likes={likes!}
+        />
       </div>
     </main>
   );
