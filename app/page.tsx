@@ -40,7 +40,7 @@ export default async function Index() {
 
         <BuildTableNav />
 
-        <BuildTable builds={result} characters={result2} />
+        <BuildTable builds={result} characters={result2} pathurl={"/"} />
       </div>
     </main>
   );

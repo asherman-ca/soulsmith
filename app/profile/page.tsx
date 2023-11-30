@@ -48,6 +48,7 @@ const page = async () => {
           builds={result.builds}
           characters={result2}
           profileId={user.id}
+          pathurl={"/profile"}
         />
       </div>
     </div>

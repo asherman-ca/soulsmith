@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
-import Image from "next/image";
 import React from "react";
 import BuildTable from "./components/BuildTable";
 
@@ -24,18 +23,6 @@ const page = async ({ params }: ProfileProps) => {
     )
     .eq("id", params.profileId);
 
-  // const { data: buildData, error: buildError } = await supabase
-  //   .from("builds")
-  //   .select(
-  //     `*,
-  //   skills:build_skills(skill:skills(*)),
-  //   character:characters(*),
-  //   weapon:weapons(*)`,
-  //   )
-  //   .eq("user", profileId);
-
-  // console.log("builds", buildData);
-
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
     .select("*");
@@ -46,9 +33,6 @@ const page = async ({ params }: ProfileProps) => {
   const dateObject = new Date(dateString);
   const options: any = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = dateObject.toLocaleDateString("en-US", options);
-
-  // console.log(result.builds);
-  console.log(params);
 
   return (
     <div className="page-container">
@@ -81,16 +65,8 @@ const page = async ({ params }: ProfileProps) => {
             characters={result2}
             builds={result.builds}
             profileId={params.profileId}
+            pathurl={`/profile/${params.profileId}`}
           />
-          {/* {characterData.map((character: Character) => (
-            <Image
-              src={character.image}
-              alt="character image"
-              height={100}
-              width={100}
-              className="h-16 w-16"
-            />
-          ))} */}
         </div>
       </div>
     </div>
