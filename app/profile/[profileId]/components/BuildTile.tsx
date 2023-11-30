@@ -35,7 +35,8 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
     toast.success("Copied to clipboard");
   };
 
-  console.log("liked", isInitiallyLiked);
+  // console.log("liked", isInitiallyLiked);
+  console.log("build", build);
 
   return (
     <Link className="flex flex-col" href={`/build/${build.id}`}>
@@ -152,7 +153,11 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
             <IconHeart className="h-5 w-5" />
             <p>42</p>
           </button> */}
-          <LikeButton buildId={build.id} initialLike={isInitiallyLiked} />
+          <LikeButton
+            buildId={build.id}
+            initialLike={isInitiallyLiked}
+            initialLikes={build.likes.length}
+          />
         </div>
       </div>
       <div className="flex justify-between rounded-b-md bg-[#3F3F45]/75 p-2 text-xs">

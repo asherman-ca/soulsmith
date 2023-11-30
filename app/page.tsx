@@ -12,7 +12,7 @@ export default async function Index() {
   const { data, error } = await supabase
     .from("builds")
     .select(
-      `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
+      `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
     )
     .order("id", { ascending: false })
     .limit(100);

@@ -1,3 +1,9 @@
+type BuildLike = {
+  id: number;
+  user: string;
+  build: number;
+};
+
 declare interface Weapon {
   id: number;
   name: string;
@@ -36,4 +42,5 @@ declare interface BuildData {
     username: string;
   };
   user: string;
+  likes: BuildLike[];
 }

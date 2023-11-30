@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/client";
 import { cn } from "@nextui-org/react";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { IconHeart } from "@tabler/icons-react";
@@ -9,10 +8,16 @@ interface LikeButtonProps {
   buildId: number;
   setLikes?: (arg: any) => void;
   initialLike?: boolean;
+  initialLikes: number;
 }
 
-const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
+const LikeButton: FC<LikeButtonProps> = ({
+  buildId,
+  initialLike,
+  initialLikes,
+}) => {
   const [isLiked, setIsLiked] = useState<boolean | null>(initialLike || null);
+  const [likes, setLikes] = useState<number>(initialLikes);
   useEffect(() => {
     initialLike && setIsLiked(initialLike);
   }, [initialLike]);
@@ -36,16 +41,17 @@ const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
         .eq("build", buildId)
         .eq("user", session.user.id);
       setIsLiked(false);
+      setLikes(likes - 1);
       toast.success("Unliked build");
     } else {
       const { error } = await supabase
         .from("build_likes")
         .insert({ build: buildId, user: session.user.id });
       setIsLiked(true);
+      setLikes(likes + 1);
       toast.success("Liked build");
     }
   };
-  // get supabase user on client
 
   return (
     <button
@@ -57,7 +63,7 @@ const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
           "text-red-500": isLiked,
         })}
       />
-      <p>42</p>
+      <p>{likes}</p>
     </button>
   );
 };
