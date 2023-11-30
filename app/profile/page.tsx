@@ -3,6 +3,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
+import BuildTable from "./[profileId]/components/BuildTable";
 
 export const dynamic = "force-dynamic";
 
@@ -18,16 +19,19 @@ const page = async () => {
   }
 
   const { data, error } = await supabase
-    .from("builds")
+    .from("profiles")
     .select(
-      `*,
-      skills:build_skills(skill:skills(*)),
-      character:characters(*),
-      weapon:weapons(*)`,
+      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*)))`,
     )
-    .eq("user", user.id);
+    .eq("id", user.id);
 
   const result: any = data![0];
+
+  const { data: characterData, error: characterError } = await supabase
+    .from("characters")
+    .select("*");
+
+  const result2: any = characterData!;
 
   return (
     <div className="page-container">
@@ -39,6 +43,12 @@ const page = async () => {
             Profile
           </span>
         </h3>
+
+        <BuildTable
+          builds={result.builds}
+          characters={result2}
+          profileId={user.id}
+        />
       </div>
     </div>
   );

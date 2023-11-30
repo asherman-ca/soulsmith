@@ -1,6 +1,6 @@
 "use client";
 import { FC } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
@@ -14,6 +14,7 @@ interface BuildTableProps {
 const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const displayBuilds = builds.filter((build) => {
     if (searchParams.get("class")) {
@@ -29,7 +30,7 @@ const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
         {characters.map((character) => (
           <div className="flex-1">
             <div className="group relative">
-              <div className="absolute -inset-[2px] rounded-lg bg-white/50 opacity-75 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
+              <div className="absolute -inset-[2px] rounded-lg bg-white/50 opacity-75 blur transition duration-1000 group-hover:-inset-[4px] group-hover:opacity-100 group-hover:duration-200"></div>
               <Image
                 key={character.id}
                 className={cn(
@@ -45,11 +46,15 @@ const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
                 width={100}
                 onClick={() => {
                   if (searchParams.get("class") === character.name) {
-                    router.push(`/profile/${profileId}`);
+                    pathname !== "/profile"
+                      ? router.push(`/profile/${profileId}`)
+                      : router.push(`/profile`);
                   } else {
-                    router.push(
-                      `/profile/${profileId}?class=${character.name}`,
-                    );
+                    pathname !== "/profile"
+                      ? router.push(
+                          `/profile/${profileId}?class=${character.name}`,
+                        )
+                      : router.push(`/profile?class=${character.name}`);
                   }
                 }}
               />
