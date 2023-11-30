@@ -1,6 +1,5 @@
 import LikeButton from "@/components/LikeButton";
 import { Tooltip } from "@nextui-org/react";
-import { IconHeart } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";

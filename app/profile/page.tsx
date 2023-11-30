@@ -21,7 +21,7 @@ const page = async () => {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*)))`,
+      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
     )
     .eq("id", user.id);
 
@@ -32,6 +32,17 @@ const page = async () => {
     .select("*");
 
   const result2: any = characterData!;
+
+  let likes = null;
+
+  if (user) {
+    const { data: likesData, error: likesError } = await supabase
+      .from("build_likes")
+      .select("*")
+      .eq("user", user.id);
+
+    likes = likesData ? likesData.map((like) => like.build) : null;
+  }
 
   return (
     <div className="page-container">
@@ -49,6 +60,7 @@ const page = async () => {
           characters={result2}
           profileId={user.id}
           pathurl={"/profile"}
+          likes={likes!}
         />
       </div>
     </div>

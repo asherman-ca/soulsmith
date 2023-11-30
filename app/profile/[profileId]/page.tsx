@@ -19,7 +19,7 @@ const page = async ({ params }: ProfileProps) => {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*)))`,
+      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
     )
     .eq("id", params.profileId);
 
@@ -33,6 +33,21 @@ const page = async ({ params }: ProfileProps) => {
   const dateObject = new Date(dateString);
   const options: any = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = dateObject.toLocaleDateString("en-US", options);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let likes = null;
+
+  if (user) {
+    const { data: likesData, error: likesError } = await supabase
+      .from("build_likes")
+      .select("*")
+      .eq("user", user.id);
+
+    likes = likesData ? likesData.map((like) => like.build) : null;
+  }
 
   return (
     <div className="page-container">
@@ -66,6 +81,7 @@ const page = async ({ params }: ProfileProps) => {
             builds={result.builds}
             profileId={params.profileId}
             pathurl={`/profile/${params.profileId}`}
+            likes={likes!}
           />
         </div>
       </div>
