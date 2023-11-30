@@ -7,18 +7,39 @@ import BuildTable from "../profile/[profileId]/components/BuildTable";
 
 export const dynamic = "force-dynamic";
 
-export default async function Index() {
+export default async function Index({
+  searchParams,
+}: {
+  searchParams: { class: string };
+}) {
+  console.log("props", searchParams);
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { data, error } = await supabase
-    .from("builds")
-    .select(
-      `*, skills:build_skills(skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
-    )
-    .order("id", { ascending: false })
-    .limit(100);
+  let result: any;
+  if (searchParams.class) {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
+      )
+      .eq("type", searchParams.class)
+      .order("id", { ascending: false })
+      .limit(100);
 
-  const result: any = data!;
+    console.log("data", data);
+
+    result = data!;
+  } else {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(skill:skills(*)), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
+      )
+      .order("id", { ascending: false })
+      .limit(100);
+
+    result = data!;
+  }
 
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
@@ -26,7 +47,7 @@ export default async function Index() {
 
   const result2: any = characterData!;
 
-  console.log("res", result);
+  // console.log("res", result);
 
   return (
     <main className="page-container">
