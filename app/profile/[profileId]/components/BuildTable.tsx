@@ -35,8 +35,10 @@ const BuildTable: FC<BuildTableProps> = ({
   const onCharacterClick = (character: Character) => {
     if (searchParams.get("class") === character.name) {
       router.push(pathurl);
+      router.refresh();
     } else {
       router.push(`${pathurl}?class=${character.name}`);
+      router.refresh();
     }
   };
 
