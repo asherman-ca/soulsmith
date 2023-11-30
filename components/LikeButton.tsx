@@ -14,7 +14,7 @@ interface LikeButtonProps {
 const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
   const [isLiked, setIsLiked] = useState<boolean | null>(initialLike || null);
   useEffect(() => {
-    setIsLiked(initialLike);
+    initialLike && setIsLiked(initialLike);
   }, [initialLike]);
 
   const {
@@ -23,7 +23,7 @@ const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
     supabaseClient: supabase,
   } = useSessionContext();
 
-  const handleLike = async (e) => {
+  const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
     console.log("sesh", session);
