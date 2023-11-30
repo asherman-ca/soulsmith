@@ -29,13 +29,13 @@ const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
         {characters.map((character) => (
           <div className="flex-1">
             <div className="group relative">
-              <div className="animate-tilt absolute -inset-0.5 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 opacity-75 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
+              <div className="absolute -inset-[2px] rounded-lg bg-white/50 opacity-75 blur transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
               <Image
                 key={character.id}
                 className={cn(
-                  "relative h-full w-full flex-1 cursor-pointer rounded-xl border-4 border-slate-300/30 bg-black",
+                  "relative h-full w-full flex-1 cursor-pointer rounded-xl border-4 border-transparent bg-black group-hover:border-foreground-900/80",
                   {
-                    "border-yellow-500":
+                    "border-foreground-900/80":
                       searchParams.get("class") === character.name,
                   },
                 )}
