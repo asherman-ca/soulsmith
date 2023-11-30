@@ -55,12 +55,13 @@ const LikeButton: FC<LikeButtonProps> = ({
 
   return (
     <button
-      className="flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 hover:bg-gray-900/50"
+      className="group flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 hover:bg-gray-900/50"
       onClick={handleLike}
     >
       <IconHeart
-        className={cn("h-5 w-5", {
+        className={cn("group-hover:animate-wiggleinfinite h-5 w-5", {
           "text-red-500": isLiked,
+          "group-hover:text-red-500": !isLiked,
         })}
       />
       <p>{likes}</p>

@@ -19,8 +19,8 @@ const DeleteButton: FC<DeleteButtonProps> = ({ buildId }) => {
       console.error(error);
       toast.error("Something went wrong");
     } else {
-      router.refresh();
       router.push("/");
+      router.refresh();
     }
   };
 
