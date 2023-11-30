@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type BuildProps = {
@@ -22,7 +23,8 @@ const page = async ({ params: { buildId } }: BuildProps) => {
       `*,
       skills:build_skills(skill:skills(*)),
       character:characters(*),
-      weapon:weapons(*)`,
+      weapon:weapons(*),
+      profile:profiles(*)`,
     )
     .eq("id", buildId);
 
@@ -46,6 +48,15 @@ const page = async ({ params: { buildId } }: BuildProps) => {
             {result.name}
           </span>
         </h3>
+
+        <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
+          <div>{result.name}</div>
+          {result.description && <div>{result.description}</div>}
+          <Link href={`/profile/${result.profile.id}`}>
+            by {result.profile.username || result.profile.id}
+          </Link>
+        </div>
+
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
             <div className="flex items-center gap-4">
