@@ -4,11 +4,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
+import { on } from "events";
 
 interface BuildTableProps {
   characters: Character[];
   builds: BuildData[];
-  profileId: string;
+  profileId?: string;
 }
 
 const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
@@ -23,6 +24,26 @@ const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
       return true;
     }
   });
+
+  const onCharacterClick = (character: Character) => {
+    if (searchParams.get("class") === character.name) {
+      if (pathname === "/profile") {
+        router.push(`/profile`);
+      } else if (pathname === "/") {
+        router.push(`/`);
+      } else {
+        router.push(`/profile/${profileId}`);
+      }
+    } else {
+      if (pathname === "/profile") {
+        router.push(`/profile?class=${character.name}`);
+      } else if (pathname === "/") {
+        router.push(`/?class=${character.name}`);
+      } else {
+        router.push(`/profile/${profileId}?class=${character.name}`);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,19 +65,7 @@ const BuildTable: FC<BuildTableProps> = ({ characters, builds, profileId }) => {
                 alt="character image"
                 height={100}
                 width={100}
-                onClick={() => {
-                  if (searchParams.get("class") === character.name) {
-                    pathname !== "/profile"
-                      ? router.push(`/profile/${profileId}`)
-                      : router.push(`/profile`);
-                  } else {
-                    pathname !== "/profile"
-                      ? router.push(
-                          `/profile/${profileId}?class=${character.name}`,
-                        )
-                      : router.push(`/profile?class=${character.name}`);
-                  }
-                }}
+                onClick={() => onCharacterClick(character)}
               />
             </div>
             {/* </div> */}
