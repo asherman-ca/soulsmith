@@ -1,10 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
-import { Tooltip } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import DeleteButton from "./components/DeleteButton";
 
 type BuildProps = {
   params: {
@@ -34,6 +35,10 @@ const page = async ({ params: { buildId } }: BuildProps) => {
   if (!result) {
     return <div className="page-container">Build not found</div>;
   }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <div className="page-container">
@@ -114,11 +119,12 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                         <h1 className="text-base font-medium">
                           {result.weapon.name}
                         </h1>
-                        {result.weapon.stats
-                          .split(",")
-                          .map((weaponStat: string) => {
-                            return <p key={weaponStat}>{weaponStat}</p>;
-                          })}
+                        {result.weapon.stats &&
+                          result.weapon.stats
+                            .split(",")
+                            .map((weaponStat: string) => {
+                              return <p key={weaponStat}>{weaponStat}</p>;
+                            })}
                       </div>
                     }
                   >
@@ -182,6 +188,8 @@ const page = async ({ params: { buildId } }: BuildProps) => {
             {result.description && <div>{result.description}</div>}
           </p>
         </div>
+
+        {user && user.id === result.user && <DeleteButton buildId={buildId} />}
         {/* Test */}
       </div>
     </div>

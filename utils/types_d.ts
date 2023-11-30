@@ -35,4 +35,5 @@ declare interface BuildData {
     id: number;
     username: string;
   };
+  user: string;
 }
