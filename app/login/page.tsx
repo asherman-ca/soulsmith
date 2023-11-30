@@ -100,7 +100,7 @@ export default function Login() {
 
   return (
     <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-background">
-      <Link
+      <a
         href="/"
         className="bg-btn-background hover:bg-btn-background-hover group absolute left-8 top-8 flex items-center rounded-md px-4 py-2 text-sm text-foreground no-underline"
       >
@@ -119,7 +119,7 @@ export default function Login() {
           <polyline points="15 18 9 12 15 6" />
         </svg>{" "}
         Back
-      </Link>
+      </a>
       <div className="flex flex-col gap-8 rounded-md border-gray-300 p-8 md:border-1">
         <h1 className="text-2xl font-semibold text-blue-500">SoulSmith</h1>
         <div className="flex flex-col gap-2">

@@ -26,7 +26,8 @@ const LikeButton: FC<LikeButtonProps> = ({ buildId, initialLike }) => {
   const handleLike = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!session?.user) return;
+    console.log("sesh", session);
+    if (!session) return;
 
     if (isLiked) {
       const { error } = await supabase
