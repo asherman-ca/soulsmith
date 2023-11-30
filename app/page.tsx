@@ -40,8 +40,6 @@ export default async function Index() {
     likes = likesData ? likesData.map((like) => like.build) : null;
   }
 
-  // console.log("res", result);
-
   return (
     <main className="page-container">
       <div className="content-container">

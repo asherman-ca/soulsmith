@@ -11,7 +11,7 @@ const BuildTableNav: FC<BuildTableNavProps> = ({}) => {
 
   return (
     <div className="flex border-b border-gray-500 text-lg font-bold">
-      <Link
+      <a
         href="/"
         className={cn("px-4 py-2 hover:text-foreground-900", {
           "border-b-2 border-b-foreground-900 text-foreground-900":
@@ -19,8 +19,8 @@ const BuildTableNav: FC<BuildTableNavProps> = ({}) => {
         })}
       >
         New Builds
-      </Link>
-      <Link
+      </a>
+      <a
         href="/liked"
         className={cn("px-4 py-2 hover:text-foreground-900", {
           "border-b-2 border-b-foreground-900 text-foreground-900":
@@ -28,7 +28,7 @@ const BuildTableNav: FC<BuildTableNavProps> = ({}) => {
         })}
       >
         Liked Builds
-      </Link>
+      </a>
     </div>
   );
 };
