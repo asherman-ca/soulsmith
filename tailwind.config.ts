@@ -11,14 +11,20 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
+        // wiggle: {
+        //   "0%, 100%": { transform: "rotate(-20deg)" },
+        //   "50%": { transform: "rotate(20deg)" },
+        // },
         wiggle: {
-          "0%, 100%": { transform: "rotate(-20deg)" },
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "25%": { transform: "rotate(-20deg)" },
           "50%": { transform: "rotate(20deg)" },
+          "75%": { transform: "rotate(-20deg)" },
         },
       },
       animation: {
-        wiggle: "wiggle 500ms linear",
-        wiggleinfinite: "wiggle 200ms ease-in-out infinite",
+        wiggle: "wiggle 700ms ease",
+        wiggleinfinite: "wiggle 700ms ease infinite",
       },
     },
   },

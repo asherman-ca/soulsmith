@@ -19,16 +19,18 @@ const SideBarLink: FC<SideBarLinkProps> = ({ link, pathname }) => {
       key={link.url}
       href={link.url}
       className={cn(
-        "flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
+        "group flex cursor-pointer items-center gap-3 rounded-md p-2 hover:bg-[#3F3F45]",
         {
           "bg-[#3F3F45]": pathname === link.url,
         },
       )}
-      onClick={() => setEffect(true)}
+      // onClick={() => setEffect(true)}
     >
       {React.cloneElement(link.icon as React.ReactElement, {
-        className: `${effect && "animate-wiggle"}`,
-        onAnimationEnd: () => setEffect(false),
+        className: `${
+          effect && "animate-wiggle"
+        } group-hover:animate-wiggleinfinite`,
+        // onAnimationEnd: () => setEffect(false),
       })}
       <span>{link.name}</span>
     </Link>
