@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { Tooltip } from "@nextui-org/react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -49,11 +50,21 @@ const page = async ({ params: { buildId } }: BuildProps) => {
           </span>
         </h3>
 
-        <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
-          <div>{result.name}</div>
-          {result.description && <div>{result.description}</div>}
-          <Link href={`/profile/${result.profile.id}`}>
-            by {result.profile.username || result.profile.id}
+        <div className="flex flex-col">
+          <div className="flex flex-col gap-2 rounded-t-md bg-gray-800 p-4">
+            <p className="text-xs text-foreground/50">
+              Soulstone Survivors {result.character.name} Build
+            </p>
+            <p className="text-lg font-bold">{result.name}</p>
+          </div>
+          <Link
+            href={`/profile/${result.profile.id}`}
+            className="rounded-b-md bg-gray-800/70 p-4 text-xs"
+          >
+            by{" "}
+            <span className="font-bold text-primary/80">
+              {result.profile.username || result.profile.id}
+            </span>
           </Link>
         </div>
 
@@ -61,26 +72,64 @@ const page = async ({ params: { buildId } }: BuildProps) => {
           <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
             <div className="flex items-center gap-4">
               <div className="flex flex-col gap-4">
-                <h2 className="font-bold">Character</h2>
+                <h2 className="font-bold">CHARACTER</h2>
                 <div className="h-24 w-24 rounded-md border-4 border-slate-300/30">
-                  <Image
-                    className="rounded-md"
-                    src={result.character.image}
-                    alt="character image"
-                    height={100}
-                    width={100}
-                  />
+                  <Tooltip
+                    placement="bottom"
+                    color="default"
+                    classNames={{
+                      base: ["border-2 rounded-md border-gray-500 w-44"],
+                      content: ["p-2 rounded-md text-xs"],
+                    }}
+                    content={
+                      <div className="flex flex-col gap-1">
+                        <h1 className="text-base font-medium">
+                          {result.character.name}
+                        </h1>
+                        <h2>{result.character.tags}</h2>
+                      </div>
+                    }
+                  >
+                    <Image
+                      className="rounded-md"
+                      src={result.character.image}
+                      alt="character image"
+                      height={100}
+                      width={100}
+                    />
+                  </Tooltip>
                 </div>
               </div>
               {result.weapon?.image && (
                 <div className="h-16 w-16 rounded-md border-4 border-slate-300/30">
-                  <Image
-                    className="rounded-md"
-                    src={result.weapon.image}
-                    alt="weapon image"
-                    height={100}
-                    width={100}
-                  />
+                  <Tooltip
+                    placement="bottom"
+                    color="default"
+                    classNames={{
+                      base: ["border-2 rounded-md border-gray-500"],
+                      content: ["p-2 rounded-md text-xs"],
+                    }}
+                    content={
+                      <div className="flex flex-col gap-1">
+                        <h1 className="text-base font-medium">
+                          {result.weapon.name}
+                        </h1>
+                        {result.weapon.stats
+                          .split(",")
+                          .map((weaponStat: string) => {
+                            return <p key={weaponStat}>{weaponStat}</p>;
+                          })}
+                      </div>
+                    }
+                  >
+                    <Image
+                      className="rounded-md"
+                      src={result.weapon.image}
+                      alt="weapon image"
+                      height={100}
+                      width={100}
+                    />
+                  </Tooltip>
                 </div>
               )}
             </div>
@@ -94,13 +143,31 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                       key={skill.id}
                       className="h-16 w-16 rounded-md border-4 border-slate-300/30"
                     >
-                      <Image
-                        className="rounded-md"
-                        src={skill.image}
-                        alt="skill image"
-                        height={100}
-                        width={100}
-                      />
+                      <Tooltip
+                        placement="bottom"
+                        color="default"
+                        classNames={{
+                          base: ["border-2 rounded-md border-gray-500 w-60"],
+                          content: ["p-2 rounded-md text-xs"],
+                        }}
+                        content={
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-end justify-between font-medium">
+                              <h1 className="text-base">{skill.name}</h1>
+                              <p>{skill.cooldown}s</p>
+                            </div>
+                            <p>{skill.description}</p>
+                          </div>
+                        }
+                      >
+                        <Image
+                          className="rounded-md"
+                          src={skill.image}
+                          alt="skill image"
+                          height={100}
+                          width={100}
+                        />
+                      </Tooltip>
                     </div>
                   ))}
                 </div>
@@ -109,6 +176,12 @@ const page = async ({ params: { buildId } }: BuildProps) => {
           </div>
         </div>
 
+        <div className="flex flex-col gap-1 rounded-md bg-gray-800 p-4">
+          <p className="text-sm font-bold">BUILD NOTES</p>
+          <p className="whitespace-pre-line text-sm">
+            {result.description && <div>{result.description}</div>}
+          </p>
+        </div>
         {/* Test */}
       </div>
     </div>
