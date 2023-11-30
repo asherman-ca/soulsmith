@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
-import { on } from "events";
 
 interface BuildTableProps {
   characters: Character[];

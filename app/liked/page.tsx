@@ -1,8 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
-import BuildTable from "./profile/[profileId]/components/BuildTable";
+
 import BuildTableNav from "@/components/BuildTableNav";
+import BuildTable from "../profile/[profileId]/components/BuildTable";
 
 export const dynamic = "force-dynamic";
 
