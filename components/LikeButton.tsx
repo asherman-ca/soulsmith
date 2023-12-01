@@ -1,6 +1,7 @@
 import { cn } from "@nextui-org/react";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { IconHeart } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -18,6 +19,7 @@ const LikeButton: FC<LikeButtonProps> = ({
 }) => {
   const [isLiked, setIsLiked] = useState<boolean | null>(initialLike || null);
   const [likes, setLikes] = useState<number>(initialLikes);
+  const router = useRouter();
   useEffect(() => {
     initialLike && setIsLiked(initialLike);
   }, [initialLike]);

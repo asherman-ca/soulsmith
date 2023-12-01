@@ -27,7 +27,8 @@ const page = async ({ params: { buildId } }: BuildProps) => {
       skills:build_skills(skill:skills(*)),
       character:characters(*),
       weapon:weapons(*),
-      profile:profiles(*)`,
+      profile:profiles(*),
+      likes:build_likes(*)`,
     )
     .eq("id", buildId);
 
@@ -41,9 +42,19 @@ const page = async ({ params: { buildId } }: BuildProps) => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // if (!result) {
-  //   return <div className="page-container">Build not found</div>;
-  // }
+  let initialLike = false;
+
+  if (user) {
+    const { data: likesData, error: likesError } = await supabase
+      .from("build_likes")
+      .select("*")
+      .eq("user", user.id)
+      .eq("build", buildId);
+
+    likesData!.length > 0 && (initialLike = true);
+  }
+
+  console.log("like", initialLike);
 
   return (
     <div className="page-container">

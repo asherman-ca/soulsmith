@@ -38,7 +38,7 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
   console.log("build", build);
 
   return (
-    <Link className="flex flex-col" href={`/build/${build.id}`}>
+    <a className="flex flex-col" href={`/build/${build.id}`}>
       <div className="flex rounded-t-md bg-[#3F3F45] p-2">
         <div className="flex flex-1 gap-2">
           <div>
@@ -165,7 +165,7 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
           Share
         </button>
       </div>
-    </Link>
+    </a>
   );
 };
 
