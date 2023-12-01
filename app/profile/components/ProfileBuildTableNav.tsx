@@ -6,11 +6,7 @@ import { FC } from "react";
 interface ProfileBuildTableNavProps {}
 
 const ProfileBuildTableNav: FC<ProfileBuildTableNavProps> = ({}) => {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  // console.log("searchParams", searchParams);
-  // console.log("pathname", pathname);
 
   return (
     <div className="flex border-b border-gray-500 text-lg font-bold">
@@ -21,7 +17,7 @@ const ProfileBuildTableNav: FC<ProfileBuildTableNavProps> = ({}) => {
             searchParams.get("sort") !== "liked",
         })}
       >
-        New Builds
+        Your Builds
       </a>
       <a
         href="/profile?sort=liked"
@@ -30,7 +26,7 @@ const ProfileBuildTableNav: FC<ProfileBuildTableNavProps> = ({}) => {
             searchParams.get("sort") === "liked",
         })}
       >
-        Liked Builds
+        Favorite Builds
       </a>
     </div>
   );

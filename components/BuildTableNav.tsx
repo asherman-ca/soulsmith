@@ -26,7 +26,7 @@ const BuildTableNav: FC<BuildTableNavProps> = () => {
             pathname === "/liked",
         })}
       >
-        Liked Builds
+        Top Builds
       </a>
     </div>
   );

@@ -27,8 +27,6 @@ const page = async ({ searchParams }: ProfileProps) => {
 
   let result: any;
 
-  console.log("params", searchParams);
-
   if (searchParams.sort === "liked") {
     console.log("hits");
     const { data, error } = await supabase
@@ -42,6 +40,15 @@ const page = async ({ searchParams }: ProfileProps) => {
     result.builds.sort(
       (a: any, b: any) => b.like_count[0].count - a.like_count[0].count,
     );
+
+    const { data: likedBuilds, error: likedBuildsError } = await supabase
+      .from("build_likes")
+      .select(
+        "*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))",
+      )
+      .eq("user", user.id);
+
+    result = { builds: likedBuilds!.map((build: any) => build.build) };
   } else {
     const { data, error } = await supabase
       .from("profiles")
