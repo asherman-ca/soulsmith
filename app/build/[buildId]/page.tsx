@@ -40,6 +40,10 @@ const page = async ({ params: { buildId } }: BuildProps) => {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // if (!result) {
+  //   return <div className="page-container">Build not found</div>;
+  // }
+
   return (
     <div className="page-container">
       <div className="content-container">
@@ -123,7 +127,7 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                           result.weapon.stats
                             .split(",")
                             .map((weaponStat: string) => {
-                              return <p key={weaponStat}>{weaponStat}</p>;
+                              return <p key={result.weapon.id}>{weaponStat}</p>;
                             })}
                       </div>
                     }
@@ -184,13 +188,13 @@ const page = async ({ params: { buildId } }: BuildProps) => {
 
         <div className="flex flex-col gap-1 rounded-md bg-gray-800 p-4">
           <p className="text-sm font-bold">BUILD NOTES</p>
-          <p className="whitespace-pre-line text-sm">
+          {/* this causes hydration error - move to client component? */}
+          {/* <p className="whitespace-pre-line text-sm">
             {result.description && <div>{result.description}</div>}
-          </p>
+          </p> */}
         </div>
 
         {user && user.id === result.user && <DeleteButton buildId={buildId} />}
-        {/* Test */}
       </div>
     </div>
   );
