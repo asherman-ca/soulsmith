@@ -24,7 +24,6 @@ const BuildTable: FC<BuildTableProps> = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const pathname = usePathname();
 
   const displayBuilds = builds.filter((build) => {
     if (searchParams.get("class")) {
@@ -34,13 +33,20 @@ const BuildTable: FC<BuildTableProps> = ({
     }
   });
 
+  const likedSorted = searchParams.get("sort");
+
   const onCharacterClick = (character: Character) => {
     if (searchParams.get("class") === character.name) {
       router.push(pathurl);
       router.refresh();
     } else {
-      router.push(`${pathurl}?class=${character.name}`);
-      router.refresh();
+      if (likedSorted) {
+        router.push(`${pathurl}&class=${character.name}`);
+        router.refresh();
+      } else {
+        router.push(`${pathurl}?class=${character.name}`);
+        router.refresh();
+      }
     }
   };
 

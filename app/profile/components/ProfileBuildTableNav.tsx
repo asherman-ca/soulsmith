@@ -8,6 +8,8 @@ interface ProfileBuildTableNavProps {}
 const ProfileBuildTableNav: FC<ProfileBuildTableNavProps> = ({}) => {
   const searchParams = useSearchParams();
 
+  console.log(searchParams.get("sort"));
+
   return (
     <div className="flex border-b border-gray-500 text-lg font-bold">
       <a

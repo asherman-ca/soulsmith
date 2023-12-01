@@ -94,7 +94,9 @@ const page = async ({ searchParams }: ProfileProps) => {
           builds={result.builds}
           characters={result2}
           profileId={user.id}
-          pathurl={"/profile"}
+          pathurl={`/profile${
+            searchParams.sort === "liked" ? "?sort=liked" : ""
+          }`}
           likes={likes!}
           authedUser={!!user}
         />
