@@ -8,9 +8,14 @@ import { toast } from "sonner";
 interface BuildTileProps {
   build: BuildData;
   isInitiallyLiked?: boolean;
+  authedUser: boolean;
 }
 
-const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
+const BuildTile: FC<BuildTileProps> = ({
+  build,
+  isInitiallyLiked,
+  authedUser,
+}) => {
   const dateString = build.created_at;
   const dateObject = new Date(dateString);
   const options: any = { year: "numeric", month: "short", day: "numeric" };
@@ -33,9 +38,6 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
     );
     toast.success("Copied to clipboard");
   };
-
-  // console.log("liked", isInitiallyLiked);
-  console.log("build", build);
 
   return (
     <a className="flex flex-col" href={`/build/${build.id}`}>
@@ -156,6 +158,8 @@ const BuildTile: FC<BuildTileProps> = ({ build, isInitiallyLiked }) => {
             buildId={build.id}
             initialLike={isInitiallyLiked}
             initialLikes={build.likes.length}
+            type={"buildtile"}
+            authedUser={authedUser}
           />
         </div>
       </div>

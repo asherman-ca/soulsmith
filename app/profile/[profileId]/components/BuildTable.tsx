@@ -1,6 +1,6 @@
 "use client";
 import { FC } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
@@ -11,6 +11,7 @@ interface BuildTableProps {
   profileId?: string;
   pathurl: string;
   likes?: any[];
+  authedUser: boolean;
 }
 
 const BuildTable: FC<BuildTableProps> = ({
@@ -19,6 +20,7 @@ const BuildTable: FC<BuildTableProps> = ({
   profileId,
   pathurl,
   likes,
+  authedUser,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -83,6 +85,7 @@ const BuildTable: FC<BuildTableProps> = ({
             key={build.id}
             build={build}
             isInitiallyLiked={likes?.includes(build.id)}
+            authedUser={authedUser}
           />
         ))}
       </div>

@@ -82,6 +82,7 @@ const page = async ({ params }: ProfileProps) => {
             profileId={params.profileId}
             pathurl={`/profile/${params.profileId}`}
             likes={likes!}
+            authedUser={!!user}
           />
         </div>
       </div>

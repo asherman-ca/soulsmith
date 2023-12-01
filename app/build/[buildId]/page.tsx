@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 import DeleteButton from "./components/DeleteButton";
 import NoteSection from "./components/NoteSection";
+import LikeButton from "@/components/LikeButton";
 
 type BuildProps = {
   params: {
@@ -78,15 +79,21 @@ const page = async ({ params: { buildId } }: BuildProps) => {
             </p>
             <p className="text-lg font-bold">{result.name}</p>
           </div>
-          <Link
-            href={`/profile/${result.profile.id}`}
-            className="rounded-b-md bg-gray-800/70 p-4 text-xs"
-          >
-            by{" "}
-            <span className="font-bold text-primary/80">
-              {result.profile.username || result.profile.id}
-            </span>
-          </Link>
+          <div className="flex items-center gap-4 rounded-b-md bg-gray-800/70 p-4 text-xs">
+            <Link href={`/profile/${result.profile.id}`} className="">
+              by{" "}
+              <span className="font-bold text-primary/80">
+                {result.profile.username || result.profile.id}
+              </span>
+            </Link>
+            <LikeButton
+              buildId={buildId}
+              initialLike={initialLike}
+              initialLikes={result.likes.length}
+              type={"buildid"}
+              authedUser={!!user}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">

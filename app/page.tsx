@@ -58,6 +58,7 @@ export default async function Index() {
           characters={result2}
           pathurl={"/"}
           likes={likes!}
+          authedUser={!!user}
         />
       </div>
     </main>

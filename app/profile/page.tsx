@@ -61,6 +61,7 @@ const page = async () => {
           profileId={user.id}
           pathurl={"/profile"}
           likes={likes!}
+          authedUser={!!user}
         />
       </div>
     </div>
