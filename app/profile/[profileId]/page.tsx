@@ -13,6 +13,7 @@ type ProfileProps = {
 };
 
 const page = async ({ params }: ProfileProps) => {
+  console.log("rofile", params);
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 

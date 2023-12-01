@@ -4,10 +4,17 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 import BuildTable from "./[profileId]/components/BuildTable";
+import ProfileBuildTableNav from "./components/ProfileBuildTableNav";
 
 export const dynamic = "force-dynamic";
 
-const page = async () => {
+type ProfileProps = {
+  searchParams: {
+    sort: string;
+  };
+};
+
+const page = async ({ searchParams }: ProfileProps) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const {
@@ -18,14 +25,33 @@ const page = async () => {
     redirect("/login");
   }
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .select(
-      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
-    )
-    .eq("id", user.id);
+  let result: any;
 
-  const result: any = data![0];
+  console.log("params", searchParams);
+
+  if (searchParams.sort === "liked") {
+    console.log("hits");
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(
+        `*, builds:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
+      )
+      .eq("id", user.id);
+
+    result = data![0];
+    result.builds.sort(
+      (a: any, b: any) => b.like_count[0].count - a.like_count[0].count,
+    );
+  } else {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(
+        `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
+      )
+      .eq("id", user.id);
+
+    result = data![0];
+  }
 
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
@@ -54,6 +80,8 @@ const page = async () => {
             Profile
           </span>
         </h3>
+
+        <ProfileBuildTableNav />
 
         <BuildTable
           builds={result.builds}

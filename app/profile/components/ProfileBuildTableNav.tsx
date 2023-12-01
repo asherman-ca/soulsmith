@@ -1,29 +1,33 @@
 "use client";
 import { cn } from "@/utils/tw";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { FC } from "react";
 
-interface BuildTableNavProps {}
+interface ProfileBuildTableNavProps {}
 
-const BuildTableNav: FC<BuildTableNavProps> = () => {
+const ProfileBuildTableNav: FC<ProfileBuildTableNavProps> = ({}) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // console.log("searchParams", searchParams);
+  // console.log("pathname", pathname);
 
   return (
     <div className="flex border-b border-gray-500 text-lg font-bold">
       <a
-        href="/"
+        href="/profile"
         className={cn("px-4 py-2 hover:text-foreground-900", {
           "border-b-2 border-b-foreground-900 text-foreground-900":
-            pathname === "/",
+            searchParams.get("sort") !== "liked",
         })}
       >
         New Builds
       </a>
       <a
-        href="/liked"
+        href="/profile?sort=liked"
         className={cn("px-4 py-2 hover:text-foreground-900", {
           "border-b-2 border-b-foreground-900 text-foreground-900":
-            pathname === "/liked",
+            searchParams.get("sort") === "liked",
         })}
       >
         Liked Builds
@@ -32,4 +36,4 @@ const BuildTableNav: FC<BuildTableNavProps> = () => {
   );
 };
 
-export default BuildTableNav;
+export default ProfileBuildTableNav;
