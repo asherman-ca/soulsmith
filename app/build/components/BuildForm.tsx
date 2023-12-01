@@ -112,7 +112,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md bg-foreground-300/50 p-4 text-sm">
         {/* Character and weapon select */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-4">
@@ -234,17 +234,18 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           )}
         </Modal>
       </div>
-      <div className="flex flex-col gap-4 rounded-md bg-gray-800 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md bg-foreground-300/50 p-4 text-sm">
         <h2 className="font-bold">BUILD DETAILS</h2>
         <Input
           label="Build Name"
           {...register("name", { required: "Build name is required" })}
           errorMessage={errors.name?.message}
+          variant={"bordered"}
         />
         <Textarea
           label="Description"
-          // onChange={(e) => setValue("description", e.target.value)}
           {...register("description")}
+          variant={"bordered"}
         />
         {/* <p className="whitespace-pre-line">{watch("description")}</p> */}
         <Button onClick={handleSubmit(onSubmit)}>Create</Button>

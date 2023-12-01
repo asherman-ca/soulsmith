@@ -41,7 +41,7 @@ const BuildTile: FC<BuildTileProps> = ({
 
   return (
     <a className="flex flex-col" href={`/build/${build.id}`}>
-      <div className="flex rounded-t-md bg-[#3F3F45] p-2">
+      <div className="flex rounded-t-md bg-foreground-300/50 p-2">
         <div className="flex flex-1 gap-2">
           <div>
             <Tooltip
@@ -147,13 +147,6 @@ const BuildTile: FC<BuildTileProps> = ({
               </div>
             ))}
           </div>
-          {/* <button
-            className="flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 hover:bg-red-600"
-            onClick={handleClick}
-          >
-            <IconHeart className="h-5 w-5" />
-            <p>42</p>
-          </button> */}
           <LikeButton
             buildId={build.id}
             initialLike={isInitiallyLiked}
@@ -163,7 +156,7 @@ const BuildTile: FC<BuildTileProps> = ({
           />
         </div>
       </div>
-      <div className="flex justify-between rounded-b-md bg-[#3F3F45]/75 p-2 text-xs">
+      <div className="flex justify-between rounded-b-md bg-foreground-400/50 p-2 text-xs">
         <div>Created on {formattedDate}</div>
         <button className="cursor-pointer" onClick={copyToClipboard}>
           Share
