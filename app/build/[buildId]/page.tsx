@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import DeleteButton from "./components/DeleteButton";
+import NoteSection from "./components/NoteSection";
 
 type BuildProps = {
   params: {
@@ -188,10 +189,9 @@ const page = async ({ params: { buildId } }: BuildProps) => {
 
         <div className="flex flex-col gap-1 rounded-md bg-gray-800 p-4">
           <p className="text-sm font-bold">BUILD NOTES</p>
-          {/* this causes hydration error - move to client component? */}
-          {/* <p className="whitespace-pre-line text-sm">
-            {result.description && <div>{result.description}</div>}
-          </p> */}
+          {result?.description && (
+            <NoteSection description={result.description} />
+          )}
         </div>
 
         {user && user.id === result.user && <DeleteButton buildId={buildId} />}
