@@ -44,8 +44,6 @@ const BuildTable: FC<BuildTableProps> = ({
     }
   };
 
-  console.log("likes", likes);
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-2">
@@ -69,7 +67,6 @@ const BuildTable: FC<BuildTableProps> = ({
                 onClick={() => onCharacterClick(character)}
               />
             </div>
-            {/* </div> */}
           </div>
         ))}
       </div>

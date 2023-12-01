@@ -12,7 +12,6 @@ export default async function Index({
 }: {
   searchParams: { class: string };
 }) {
-  console.log("props", searchParams);
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   let result: any;
@@ -20,7 +19,7 @@ export default async function Index({
     const { data, error } = await supabase
       .from("builds")
       .select(
-        `*, skills:build_skills(skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*), profile:profiles(*)`,
+        `*, skills:build_skills(skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*), profile:profiles(*), like_count:build_likes(count)`,
       )
       .eq("type", searchParams.class)
       .order("id", { ascending: false })
@@ -31,13 +30,17 @@ export default async function Index({
     const { data, error } = await supabase
       .from("builds")
       .select(
-        `*, skills:build_skills(skill:skills(*)), character:characters(*), likes:build_likes(*), weapon:weapons(*), profile:profiles(*)`,
+        `*, skills:build_skills(skill:skills(*)), character:characters(*), likes:build_likes(*), weapon:weapons(*), profile:profiles(*), like_count:build_likes(count)`,
       )
       .order("id", { ascending: false })
       .limit(100);
 
     result = data!;
   }
+
+  result.sort((a: any, b: any) =>
+    a.like_count[0].count < b.like_count[0].count ? 1 : -1,
+  );
 
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
@@ -78,6 +81,7 @@ export default async function Index({
           characters={result2}
           pathurl={"/liked"}
           likes={likes!}
+          authedUser={!!user}
         />
       </div>
     </main>
