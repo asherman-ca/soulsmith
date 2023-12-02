@@ -112,21 +112,21 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4 rounded-md bg-foreground-300/50 p-4 text-sm">
+      <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
         {/* Character and weapon select */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-4">
             <h2 className="font-bold">CHARACTER</h2>
             <div
               onClick={() => handleModalChange("character")}
-              className="h-24 w-24 cursor-pointer rounded-md border-4 border-slate-300/30"
+              className="border-border100 h-24 w-24 cursor-pointer rounded-md border-2"
             >
               {watch("character").image && (
                 <Tooltip
                   placement="bottom"
                   color="default"
                   classNames={{
-                    base: ["border-2 rounded-md border-gray-500 w-44"],
+                    base: ["border-2 rounded-md border-border100 w-44"],
                     content: ["p-2 rounded-md text-xs"],
                   }}
                   content={
@@ -154,7 +154,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
             <div className="flex flex-col gap-2">
               {/* <h2 className="font-semibold">WEAPON</h2> */}
               <div
-                className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
+                className="border-border100 h-16 w-16 cursor-pointer rounded-md border-2"
                 onClick={() => handleModalChange("weapon")}
               >
                 {watch("weapon").image && (
@@ -162,7 +162,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
                     placement="bottom"
                     color="default"
                     classNames={{
-                      base: ["border-2 rounded-md border-gray-500"],
+                      base: ["border-2 rounded-md border-border100"],
                       content: ["p-2 rounded-md text-xs"],
                     }}
                     content={
@@ -234,21 +234,30 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
           )}
         </Modal>
       </div>
-      <div className="flex flex-col gap-4 rounded-md bg-foreground-300/50 p-4 text-sm">
+      {/* Build Details */}
+      <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
         <h2 className="font-bold">BUILD DETAILS</h2>
         <Input
+          classNames={{ inputWrapper: ["border-border100"] }}
           label="Build Name"
           {...register("name", { required: "Build name is required" })}
           errorMessage={errors.name?.message}
           variant={"bordered"}
         />
         <Textarea
+          classNames={{ inputWrapper: ["border-border100"] }}
           label="Description"
           {...register("description")}
           variant={"bordered"}
         />
         {/* <p className="whitespace-pre-line">{watch("description")}</p> */}
-        <Button onClick={handleSubmit(onSubmit)}>Create</Button>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          variant="bordered"
+          className="border-border100"
+        >
+          Create
+        </Button>
       </div>
     </div>
   );

@@ -25,14 +25,20 @@ const DeleteButton: FC<DeleteButtonProps> = ({ buildId }) => {
   };
 
   return (
-    <Button
-      color="warning"
-      onClick={handleDelete}
-      radius="none"
-      className="rounded-md"
-    >
-      DELETE BUILD
-    </Button>
+    <div className="group">
+      <Button
+        color="warning"
+        onClick={handleDelete}
+        radius="none"
+        className="bg-bg100 relative rounded-md border"
+        variant="bordered"
+      >
+        <div className="bg-bg100 duration-[5000ms]! absolute left-0 top-0 z-10 flex h-full w-full translate-y-0 items-center justify-center transition-all group-hover:translate-y-[100%]">
+          <p className="">DELETE BUILD</p>
+        </div>
+        NO BACKSIES
+      </Button>
+    </div>
   );
 };
 

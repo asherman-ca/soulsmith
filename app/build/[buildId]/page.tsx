@@ -212,7 +212,11 @@ const page = async ({ params: { buildId } }: BuildProps) => {
           )}
         </div>
 
-        {user && user.id === result.user && <DeleteButton buildId={buildId} />}
+        {user && user.id === result.user && (
+          <div className="mt-auto">
+            <DeleteButton buildId={buildId} />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -16,14 +16,14 @@ const SkillTile: FC<SkillTileProps> = ({
   return (
     <div
       onClick={() => handleModalChange("skill", skillPosition)}
-      className="h-16 w-16 cursor-pointer rounded-md border-4 border-slate-300/30"
+      className="border-border100 h-16 w-16 cursor-pointer rounded-md border-2"
     >
       {watch("skills")[skillPosition]?.image && (
         <Tooltip
           placement="bottom"
           color="default"
           classNames={{
-            base: ["border-2 rounded-md border-gray-500 w-60"],
+            base: ["border-2 rounded-md border-border100 w-60"],
             content: ["p-2 rounded-md text-xs"],
           }}
           content={
