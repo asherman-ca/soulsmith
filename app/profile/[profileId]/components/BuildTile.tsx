@@ -41,14 +41,15 @@ const BuildTile: FC<BuildTileProps> = ({
 
   return (
     <a className="flex flex-col" href={`/build/${build.id}`}>
-      <div className="flex rounded-t-md bg-foreground-300/50 p-2">
+      <div className="border-border100 bg-bg100 flex rounded-t-md border-2 p-2">
+        {/* <div className="flex rounded-t-md border border-foreground-500 p-2"> */}
         <div className="flex flex-1 gap-2">
           <div>
             <Tooltip
               placement="bottom"
               color="default"
               classNames={{
-                base: ["border-2 rounded-md border-gray-500 w-44"],
+                base: ["border-2 rounded-md border-border100 w-44"],
                 content: ["p-2 rounded-md text-xs"],
               }}
               content={
@@ -61,7 +62,7 @@ const BuildTile: FC<BuildTileProps> = ({
               }
             >
               <Image
-                className="h-16 w-16 flex-1 rounded-md border-4 border-slate-300/30"
+                className="border-border100 h-16 w-16 flex-1 rounded-md border-2"
                 alt="character image"
                 height={100}
                 width={100}
@@ -71,7 +72,7 @@ const BuildTile: FC<BuildTileProps> = ({
           </div>
           <div className="h-full! flex flex-col items-start justify-between">
             <p className="text-lg font-bold">{build.name}</p>
-            <p className="rounded-md bg-gray-900 px-2 py-1">
+            <p className="rounded-md bg-foreground-200/50 px-2 py-1">
               {build.character.name}
             </p>
           </div>
@@ -82,12 +83,12 @@ const BuildTile: FC<BuildTileProps> = ({
               placement="bottom"
               color="default"
               classNames={{
-                base: ["border-2 rounded-md border-gray-500"],
+                base: ["border-2 rounded-md border-border100"],
                 content: ["p-2 rounded-md text-xs"],
               }}
               isDisabled={!build.weapon?.name}
               content={
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 text-xs">
                   <h1 className="text-base font-medium">
                     {build.weapon?.name}
                   </h1>
@@ -102,14 +103,14 @@ const BuildTile: FC<BuildTileProps> = ({
             >
               {build.weapon?.image ? (
                 <Image
-                  className="h-16 w-16 rounded-md border-4 border-slate-300/30"
+                  className="border-border100 h-16 w-16 rounded-md border-2"
                   alt="skill image"
                   height={100}
                   width={100}
                   src={build.weapon?.image}
                 />
               ) : (
-                <div className="h-16 w-16 rounded-md border-4 border-slate-300/30"></div>
+                <div className="border-border100 h-16 w-16 rounded-md border-2"></div>
               )}
             </Tooltip>
           </div>
@@ -123,7 +124,7 @@ const BuildTile: FC<BuildTileProps> = ({
                   placement="bottom"
                   color="default"
                   classNames={{
-                    base: ["border-2 rounded-md border-gray-500 w-60"],
+                    base: ["border-2 rounded-md border-border100 w-60"],
                     content: ["p-2 rounded-md text-xs"],
                   }}
                   content={
@@ -137,7 +138,7 @@ const BuildTile: FC<BuildTileProps> = ({
                   }
                 >
                   <Image
-                    className="h-16 w-16 rounded-md border-4 border-slate-300/30"
+                    className="border-border100 h-16 w-16 rounded-md border-2"
                     alt="skill image"
                     height={100}
                     width={100}
@@ -156,7 +157,8 @@ const BuildTile: FC<BuildTileProps> = ({
           />
         </div>
       </div>
-      <div className="flex justify-between rounded-b-md bg-foreground-400/50 p-2 text-xs">
+      <div className="bg-bg100 border-border100 flex justify-between rounded-b-md border-2 border-t-0 p-2 text-xs">
+        {/* <div className="flex justify-between rounded-b-md border border-foreground-400 p-2 text-xs"> */}
         <div>Created on {formattedDate}</div>
         <button className="cursor-pointer" onClick={copyToClipboard}>
           Share

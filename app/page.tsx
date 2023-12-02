@@ -25,6 +25,10 @@ export default async function Index() {
 
   const result2: any = characterData!;
 
+  if (characterError || error) {
+    throw new Error("Failed to fetch");
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -36,6 +40,8 @@ export default async function Index() {
       .from("build_likes")
       .select("*")
       .eq("user", user.id);
+
+    if (likesError) throw new Error("Failed to fetch");
 
     likes = likesData ? likesData.map((like) => like.build) : null;
   }

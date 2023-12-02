@@ -10,11 +10,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        bg100: "#0a0a0a",
+        bg200: "000",
+        border100: "#252525",
+      },
       keyframes: {
-        // wiggle: {
-        //   "0%, 100%": { transform: "rotate(-20deg)" },
-        //   "50%": { transform: "rotate(20deg)" },
-        // },
         wiggle: {
           "0%, 100%": { transform: "rotate(0deg)" },
           "25%": { transform: "rotate(-20deg)" },

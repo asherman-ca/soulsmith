@@ -46,7 +46,8 @@ const page = async ({ searchParams }: ProfileProps) => {
       .select(
         "*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))",
       )
-      .eq("user", user.id);
+      .eq("user", user.id)
+      .limit(50);
 
     result = { builds: likedBuilds!.map((build: any) => build.build) };
   } else {
@@ -55,7 +56,8 @@ const page = async ({ searchParams }: ProfileProps) => {
       .select(
         `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
       )
-      .eq("id", user.id);
+      .eq("id", user.id)
+      .limit(50);
 
     result = data![0];
   }
