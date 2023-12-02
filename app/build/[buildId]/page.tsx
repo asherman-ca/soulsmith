@@ -167,9 +167,9 @@ const page = async ({ params: { buildId } }: BuildProps) => {
               <div className="flex flex-col gap-4">
                 <h2 className="font-bold">SKILLS</h2>
                 <div className="flex gap-4">
-                  {result.skills.map(({ skill }) => (
+                  {result.skills.map(({ skill }, idx) => (
                     <div
-                      key={skill.id}
+                      key={`${skill.id} - ${idx}`}
                       className="h-16 w-16 rounded-md border-4 border-slate-300/30"
                     >
                       <Tooltip
