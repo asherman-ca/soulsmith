@@ -22,12 +22,6 @@ const BuildTile: FC<BuildTileProps> = ({
   const formattedDate = dateObject.toLocaleDateString("en-US", options);
   build.skills.sort((a, b) => a.position - b.position);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    console.log("like");
-  };
-
   const copyToClipboard = async (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -78,7 +72,7 @@ const BuildTile: FC<BuildTileProps> = ({
           </div>
         </div>
         <div className="flex flex-1 justify-between gap-2">
-          <div>
+          <div className="flex items-center">
             <Tooltip
               placement="bottom"
               color="default"
@@ -103,7 +97,7 @@ const BuildTile: FC<BuildTileProps> = ({
             >
               {build.weapon?.image ? (
                 <Image
-                  className="border-border100 h-16 w-16 rounded-md border-2"
+                  className="border-border100 h-12 w-12 rounded-md border-2"
                   alt="skill image"
                   height={100}
                   width={100}
@@ -114,11 +108,11 @@ const BuildTile: FC<BuildTileProps> = ({
               )}
             </Tooltip>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {build.skills.map(({ skill, position }) => (
               <div
                 key={`${build.id} - ${skill.id} - ${position}`}
-                className="h-16 w-16"
+                className="h-12 w-12"
               >
                 <Tooltip
                   placement="bottom"
@@ -138,7 +132,7 @@ const BuildTile: FC<BuildTileProps> = ({
                   }
                 >
                   <Image
-                    className="border-border100 h-16 w-16 rounded-md border-2"
+                    className="border-border100 h-12 w-12 rounded-md border-2"
                     alt="skill image"
                     height={100}
                     width={100}
@@ -148,17 +142,18 @@ const BuildTile: FC<BuildTileProps> = ({
               </div>
             ))}
           </div>
-          <LikeButton
-            buildId={build.id}
-            initialLike={isInitiallyLiked}
-            initialLikes={build.likes.length}
-            type={"buildtile"}
-            authedUser={authedUser}
-          />
+          <div className="flex items-center">
+            <LikeButton
+              buildId={build.id}
+              initialLike={isInitiallyLiked}
+              initialLikes={build.likes.length}
+              type={"buildtile"}
+              authedUser={authedUser}
+            />
+          </div>
         </div>
       </div>
       <div className="bg-bg100 border-border100 flex justify-between rounded-b-md border-2 border-t-0 p-2 text-xs">
-        {/* <div className="flex justify-between rounded-b-md border border-foreground-400 p-2 text-xs"> */}
         <div>Created on {formattedDate}</div>
         <button className="cursor-pointer" onClick={copyToClipboard}>
           Share
