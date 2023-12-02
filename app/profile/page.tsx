@@ -28,18 +28,18 @@ const page = async ({ searchParams }: ProfileProps) => {
   let result: any;
 
   if (searchParams.sort === "liked") {
-    console.log("hits");
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(
-        `*, builds:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
-      )
-      .eq("id", user.id);
+    // const { data, error } = await supabase
+    //   .from("profiles")
+    //   .select(
+    //     `*, builds:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
+    //   )
+    //   .eq("id", user.id)
+    //   .limit(50);
 
-    result = data![0];
-    result.builds.sort(
-      (a: any, b: any) => b.like_count[0].count - a.like_count[0].count,
-    );
+    // result = data![0];
+    // result.builds.sort(
+    //   (a: any, b: any) => b.like_count[0].count - a.like_count[0].count,
+    // );
 
     const { data: likedBuilds, error: likedBuildsError } = await supabase
       .from("build_likes")

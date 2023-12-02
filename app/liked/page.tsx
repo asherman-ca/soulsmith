@@ -15,6 +15,8 @@ export default async function Index({
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   let result: any;
+  // TODO: make all build table fetches use this logic
+  // TODO: also check for sort=liked param on the profile page
   if (searchParams.class) {
     const { data, error } = await supabase
       .from("builds")
@@ -23,7 +25,7 @@ export default async function Index({
       )
       .eq("type", searchParams.class)
       .order("id", { ascending: false })
-      .limit(100);
+      .limit(50);
 
     result = data!;
   } else {
@@ -33,7 +35,7 @@ export default async function Index({
         `*, skills:build_skills(skill:skills(*)), character:characters(*), likes:build_likes(*), weapon:weapons(*), profile:profiles(*), like_count:build_likes(count)`,
       )
       .order("id", { ascending: false })
-      .limit(100);
+      .limit(50);
 
     result = data!;
   }

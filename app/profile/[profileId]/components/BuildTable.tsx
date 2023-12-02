@@ -10,7 +10,7 @@ interface BuildTableProps {
   builds: BuildData[];
   profileId?: string;
   pathurl: string;
-  likes?: any[];
+  likes?: any[] | null;
   authedUser: boolean;
 }
 

@@ -15,7 +15,7 @@ export default async function Index() {
       `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
     )
     .order("id", { ascending: false })
-    .limit(100);
+    .limit(50);
 
   const result: any = data!;
 
@@ -57,7 +57,7 @@ export default async function Index() {
           builds={result}
           characters={result2}
           pathurl={"/"}
-          likes={likes!}
+          likes={likes}
           authedUser={!!user}
         />
       </div>
