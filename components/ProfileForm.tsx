@@ -73,11 +73,12 @@ const ProfileForm: FC<ProfileFormProps> = ({ userId, initialUsername }) => {
                   label={initialUsername || "Please update username 🙏 😊"}
                   {...register("username", { required: true })}
                   errorMessage={errors.username && "Username is required"}
+                  variant="faded"
                 />
               </ModalBody>
               <ModalFooter className="flex justify-between">
                 <Button
-                  variant="bordered"
+                  variant="faded"
                   onClick={handleSubmit((data) => onSubmit(data, onClose))}
                 >
                   Submit
