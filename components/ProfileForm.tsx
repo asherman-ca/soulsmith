@@ -74,13 +74,15 @@ const ProfileForm: FC<ProfileFormProps> = ({ userId, initialUsername }) => {
                   {...register("username", { required: true })}
                   errorMessage={errors.username && "Username is required"}
                 />
+              </ModalBody>
+              <ModalFooter className="flex justify-between">
                 <Button
                   variant="bordered"
                   onClick={handleSubmit((data) => onSubmit(data, onClose))}
                 >
                   Submit
                 </Button>
-              </ModalBody>
+              </ModalFooter>
             </>
           )}
         </ModalContent>
