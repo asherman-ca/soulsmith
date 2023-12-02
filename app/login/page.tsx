@@ -120,7 +120,7 @@ export default function Login() {
         </svg>{" "}
         Back
       </a>
-      <div className="flex flex-col gap-8 rounded-md border-gray-300 p-8 md:border-1">
+      <div className="border-border100 flex flex-col gap-8 rounded-md border-2 p-8 md:border-1">
         <h1 className="text-2xl font-semibold text-blue-500">SoulSmith</h1>
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-semibold">Sign in to SoulSmith</h2>
@@ -137,8 +137,9 @@ export default function Login() {
             })}
             label="Email"
             type="email"
-            // placeholder='email@domain.com'
             errorMessage={errors.email && errors.email.message}
+            variant="bordered"
+            classNames={{ inputWrapper: ["border-border100"] }}
           />
           <Input
             {...register("password", {
@@ -148,23 +149,24 @@ export default function Login() {
                 message: "Password must be at least 8 characters",
               },
             })}
-            // placeholder='password123'
+            classNames={{ inputWrapper: ["border-border100"] }}
             label="Password"
             type="password"
             errorMessage={errors.password && errors.password.message}
+            variant="bordered"
           />
           <div className="flex w-full gap-4">
             <Button
               onClick={handleSubmit(handleSignIn)}
               variant="bordered"
-              className="flex-1"
+              className="border-border100 flex-1"
             >
               Sign in
             </Button>
             <Button
               onClick={handleSubmit(handleSignUp)}
               variant="bordered"
-              className="flex-1"
+              className="border-border100 flex-1"
             >
               Sign up
             </Button>
@@ -174,12 +176,12 @@ export default function Login() {
             <p className="z-10 bg-white px-2 text-center text-sm dark:bg-black">
               OR
             </p>
-            <div className="absolute left-0 top-[50%] w-full border-b-2 border-gray-300"></div>
+            <div className="absolute left-0 top-[50%] w-full border-b-2 border-foreground-200"></div>
           </div>
           <div className="flex gap-4">
             <Button
               onClick={handleGoogleSignIn}
-              className="flex-1"
+              className="border-border100 flex-1"
               variant="bordered"
               startContent={<IconBrandGoogleFilled className="h-4 w-4" />}
             >
@@ -188,7 +190,7 @@ export default function Login() {
 
             <Button
               onClick={handleGuest}
-              className="flex-1"
+              className="border-border100 flex-1"
               variant="bordered"
               startContent={<IconUserCircle className="h-4 w-4" />}
             >

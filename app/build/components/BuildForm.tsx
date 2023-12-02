@@ -89,7 +89,10 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
       ])
       .select();
 
-    if (error) return;
+    if (error) {
+      toast.error("Something went wrong");
+      return;
+    }
 
     const skillPayload = Object.keys(formData.skills)
       .filter((key: any) => {
