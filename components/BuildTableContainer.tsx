@@ -1,16 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
-import BuildTable from "./profile/[profileId]/components/BuildTable";
 import BuildTableNav from "@/components/BuildTableNav";
-import BuildTableContainer from "@/components/BuildTableContainer";
-import { Suspense } from "react";
-import { Card, Skeleton } from "@nextui-org/react";
-import BuildTableSkeleton from "@/components/BuildTableSkeleton";
+import BuildTable from "@/app/profile/[profileId]/components/BuildTable";
 
-export const dynamic = "force-dynamic";
-
-export default async function Index() {
+const BuildTableContainer = async () => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const { data, error } = await supabase
@@ -50,33 +44,15 @@ export default async function Index() {
     likes = likesData ? likesData.map((like) => like.build) : null;
   }
 
-  // await new Promise((resolve) => setTimeout(resolve, 10000));
-
   return (
-    <main className="page-container">
-      <div className="content-container">
-        <h3 className="flex items-center text-xs" aria-label="builder header">
-          Soulstone Survivors
-          <span className="flex items-center text-gray-300">
-            <IconChevronRight height={16} width={16} />
-            Home
-          </span>
-        </h3>
-
-        <BuildTableNav />
-
-        {/* <Suspense fallback={<BuildTableSkeleton />}>
-          <BuildTableContainer />
-        </Suspense> */}
-
-        <BuildTable
-          builds={result}
-          characters={result2}
-          pathurl={"/"}
-          likes={likes}
-          authedUser={!!user}
-        />
-      </div>
-    </main>
+    <BuildTable
+      builds={result}
+      characters={result2}
+      pathurl={"/"}
+      likes={likes}
+      authedUser={!!user}
+    />
   );
-}
+};
+
+export default BuildTableContainer;
