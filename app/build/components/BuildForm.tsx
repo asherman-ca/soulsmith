@@ -108,6 +108,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
     }
 
     router.push(`/build/${data[0].id}`);
+    router.refresh();
   };
 
   return (

@@ -104,7 +104,7 @@ const BuildTile: FC<BuildTileProps> = ({
                   src={build.weapon?.image}
                 />
               ) : (
-                <div className="border-border100 h-16 w-16 rounded-md border-2"></div>
+                <div className="border-border100 h-12 w-12 rounded-md border-2"></div>
               )}
             </Tooltip>
           </div>
