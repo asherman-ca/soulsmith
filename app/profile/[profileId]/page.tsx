@@ -3,6 +3,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 import React from "react";
 import BuildTable from "./components/BuildTable";
+import { PAGINATION_LIMIT } from "@/utils/contants";
 
 export const dynamic = "force-dynamic";
 
@@ -10,25 +11,60 @@ type ProfileProps = {
   params: {
     profileId: string;
   };
+  searchParams: {
+    class: string;
+  };
 };
 
-const page = async ({ params }: ProfileProps) => {
+const page = async ({ params, searchParams }: ProfileProps) => {
   console.log("rofile", params);
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .select(
-      `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
-    )
-    .eq("id", params.profileId);
+  // const { data, error } = await supabase
+  //   .from("profiles")
+  //   .select(
+  //     `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
+  //   )
+  //   .eq("id", params.profileId);
+
+  //   const result: any = data![0];
+
+  let result: any;
+
+  console.log("searchParams", searchParams);
+
+  if (searchParams.class) {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+      )
+      .eq("user", params.profileId)
+      .eq("type", searchParams.class)
+      .order("id", { ascending: false })
+      .limit(PAGINATION_LIMIT);
+
+    result = { builds: [...data!] };
+  } else {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+      )
+      .eq("user", params.profileId)
+      .order("id", { ascending: false })
+      .limit(PAGINATION_LIMIT);
+
+    result = { builds: [...data!] };
+  }
 
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
     .select("*");
 
-  const result: any = data![0];
+  // console.log("result", result);
+
   const result2: any = characterData!;
   const dateString = result.builds[result.builds.length - 1].created_at;
   const dateObject = new Date(dateString);
@@ -84,6 +120,8 @@ const page = async ({ params }: ProfileProps) => {
             pathurl={`/profile/${params.profileId}`}
             likes={likes!}
             authedUser={!!user}
+            likedFilter={false}
+            userId={params.profileId}
           />
         </div>
       </div>

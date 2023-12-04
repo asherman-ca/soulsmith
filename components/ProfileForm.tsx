@@ -29,7 +29,6 @@ type Input = {
 };
 
 const ProfileForm: FC<ProfileFormProps> = ({ userId, initialUsername }) => {
-  console.log(initialUsername);
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {

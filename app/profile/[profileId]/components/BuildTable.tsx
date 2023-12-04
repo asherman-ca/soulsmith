@@ -16,7 +16,7 @@ interface BuildTableProps {
   likes?: any[] | null;
   authedUser: boolean;
   likedFilter: boolean;
-  userId: string;
+  userId: string | null;
 }
 
 const BuildTable: FC<BuildTableProps> = ({
@@ -51,47 +51,49 @@ const BuildTable: FC<BuildTableProps> = ({
   }, []);
 
   useEffect(() => {
-    if (likedFilter) return;
+    // if (likedFilter) return;
     if (entry?.isIntersecting) {
       const fetchMoreBuilds = async () => {
         let result: any;
         if (likedFilter) {
           if (searchParams.get("class")) {
-            const { data, error } = await supabase
+            const { data, error: likedBuildsError } = await supabase
               .from("build_likes")
               .select(
-                `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*).eq('character.name', ${searchParams.get(
-                  "class",
-                )}), weapon:weapons(*)))`,
+                `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*))`,
               )
               .eq("user", userId)
-              .limit(PAGINATION_LIMIT)
               .range(
-                curPage * PAGINATION_LIMIT,
-                (curPage + 1) * PAGINATION_LIMIT,
+                curPage * PAGINATION_LIMIT * 5,
+                (curPage + 1) * PAGINATION_LIMIT * 5,
               );
-            result = { builds: data!.map((build: any) => build.build) };
+            result = {
+              builds: data!
+                .map((build: any) => build.build)
+                .filter((build) => build.type === searchParams.get("class")),
+            };
             if (result.length > 0) {
               setCurPage((prev) => prev + 1);
             }
           } else {
-            const { data, error } = await supabase
-              .from("builds")
+            const { data, error: likedBuildsError } = await supabase
+              .from("build_likes")
               .select(
-                `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+                `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*))`,
               )
-              .order("id", { ascending: false })
+              .eq("user", userId)
               .range(
-                curPage * PAGINATION_LIMIT,
-                (curPage + 1) * PAGINATION_LIMIT,
+                curPage * PAGINATION_LIMIT * 5,
+                (curPage + 1) * PAGINATION_LIMIT * 5,
               );
-            result = data!;
+            result = { builds: data!.map((build: any) => build.build) };
             if (result.length > 0) {
               setCurPage((prev) => prev + 1);
             }
           }
         } else {
           if (searchParams.get("class")) {
+            console.log("classss");
             const { data, error } = await supabase
               .from("builds")
               .select(
@@ -126,21 +128,16 @@ const BuildTable: FC<BuildTableProps> = ({
             }
           }
         }
-        setDisplayBuilds((prev) => [...prev, ...result]);
+        if (result.length > 0) {
+          setDisplayBuilds((prev) => [...prev, ...result]);
+        }
+
         setIsFetching(false);
       };
       setIsFetching(true);
       fetchMoreBuilds();
     }
   }, [entry]);
-
-  // const displayBuilds = builds.filter((build) => {
-  //   if (searchParams.get("class")) {
-  //     return build.character.name === searchParams.get("class");
-  //   } else {
-  //     return true;
-  //   }
-  // });
 
   const likedSorted = searchParams.get("sort");
 
