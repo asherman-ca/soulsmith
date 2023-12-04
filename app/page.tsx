@@ -1,27 +1,43 @@
 import { createClient } from "@/utils/supabase/server";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
-import BuildTable from "./profile/[profileId]/components/BuildTable";
+import BuildTable from "@/components/BuildTable";
 import BuildTableNav from "@/components/BuildTableNav";
-import BuildTableContainer from "@/components/BuildTableContainer";
-import { Suspense } from "react";
-import { Card, Skeleton } from "@nextui-org/react";
-import BuildTableSkeleton from "@/components/BuildTableSkeleton";
+import { PAGINATION_LIMIT } from "@/utils/contants";
 
 export const dynamic = "force-dynamic";
 
-export default async function Index() {
+export default async function Index({
+  searchParams,
+}: {
+  searchParams: { class: string };
+}) {
+  console.log("params", searchParams.class);
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { data, error } = await supabase
-    .from("builds")
-    .select(
-      `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
-    )
-    .order("id", { ascending: false })
-    .limit(10);
+  let result: any;
+  if (searchParams.class) {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+      )
+      .eq("type", searchParams.class)
+      .order("id", { ascending: false })
+      .limit(PAGINATION_LIMIT);
 
-  const result: any = data!;
+    result = data!;
+  } else {
+    const { data, error } = await supabase
+      .from("builds")
+      .select(
+        `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+      )
+      .order("id", { ascending: false })
+      .limit(PAGINATION_LIMIT);
+
+    result = data!;
+  }
 
   const { data: characterData, error: characterError } = await supabase
     .from("characters")
@@ -29,7 +45,7 @@ export default async function Index() {
 
   const result2: any = characterData!;
 
-  if (characterError || error) {
+  if (characterError) {
     throw new Error("Failed to fetch");
   }
 
@@ -75,6 +91,7 @@ export default async function Index() {
           pathurl={"/"}
           likes={likes}
           authedUser={!!user}
+          likedFilter={false}
         />
       </div>
     </main>

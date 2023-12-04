@@ -3,7 +3,8 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cookies } from "next/headers";
 
 import BuildTableNav from "@/components/BuildTableNav";
-import BuildTable from "../profile/[profileId]/components/BuildTable";
+import BuildTable from "@/components/BuildTable";
+import { PAGINATION_LIMIT } from "@/utils/contants";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export default async function Index({
       )
       .eq("type", searchParams.class)
       .order("id", { ascending: false })
-      .limit(50);
+      .limit(PAGINATION_LIMIT * 5);
 
     result = data!;
   } else {
@@ -35,7 +36,9 @@ export default async function Index({
         `*, skills:build_skills(skill:skills(*)), character:characters(*), likes:build_likes(*), weapon:weapons(*), profile:profiles(*), like_count:build_likes(count)`,
       )
       .order("id", { ascending: false })
-      .limit(50);
+      .limit(PAGINATION_LIMIT * 5);
+
+    console.log("data", data);
 
     result = data!;
   }
@@ -84,6 +87,7 @@ export default async function Index({
           pathurl={"/liked"}
           likes={likes!}
           authedUser={!!user}
+          likedFilter={true}
         />
       </div>
     </main>
