@@ -9,12 +9,14 @@ interface BuildTileProps {
   build: BuildData;
   isInitiallyLiked?: boolean;
   authedUser: boolean;
+  ref?: any;
 }
 
 const BuildTile: FC<BuildTileProps> = ({
   build,
   isInitiallyLiked,
   authedUser,
+  ref,
 }) => {
   const dateString = build.created_at;
   const dateObject = new Date(dateString);
@@ -34,7 +36,7 @@ const BuildTile: FC<BuildTileProps> = ({
   };
 
   return (
-    <a className="flex flex-col" href={`/build/${build.id}`}>
+    <a className="flex flex-col" href={`/build/${build.id}`} ref={ref}>
       <div className="border-border100 bg-bg100 flex rounded-t-md border-2 p-2">
         {/* <div className="flex rounded-t-md border border-foreground-500 p-2"> */}
         <div className="flex flex-1 gap-2">

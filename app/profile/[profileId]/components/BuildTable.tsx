@@ -1,9 +1,11 @@
 "use client";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
+import useIntersection from "@/utils/hooks/useIntersection";
+import { createClient } from "@/utils/supabase/client";
 
 interface BuildTableProps {
   characters: Character[];
@@ -24,14 +26,55 @@ const BuildTable: FC<BuildTableProps> = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { targetRef, isIntersecting } = useIntersection();
+  const [curPage, setCurPage] = useState(1);
+  const [displayBuilds, setDisplayBuilds] = useState<any[]>(
+    builds.filter((build) => {
+      if (searchParams.get("class")) {
+        return build.character.name === searchParams.get("class");
+      } else {
+        return true;
+      }
+    }),
+  );
 
-  const displayBuilds = builds.filter((build) => {
-    if (searchParams.get("class")) {
-      return build.character.name === searchParams.get("class");
-    } else {
-      return true;
+  const supabase = createClient();
+
+  useEffect(() => {
+    console.log("hits");
+    if (isIntersecting) {
+      console.log("2");
+      const fetchMoreBuilds = async () => {
+        console.log("3");
+        const { data, error } = await supabase
+          .from("builds")
+          .select(
+            `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+          )
+          .order("id", { ascending: false })
+          .range(curPage * 10, (curPage + 1) * 10);
+
+        const result: any = data!;
+
+        console.log("res", result);
+        console.log("data", data);
+
+        setDisplayBuilds((prev) => [...prev, ...result]);
+        setCurPage((prev) => prev + 1);
+      };
+      fetchMoreBuilds();
     }
-  });
+  }, [isIntersecting]);
+
+  // const displayBuilds = builds.filter((build) => {
+  //   if (searchParams.get("class")) {
+  //     return build.character.name === searchParams.get("class");
+  //   } else {
+  //     return true;
+  //   }
+  // });
+
+  console.log("isinter", isIntersecting);
 
   const likedSorted = searchParams.get("sort");
 
@@ -83,14 +126,28 @@ const BuildTable: FC<BuildTableProps> = ({
         </p>
       </div>
       <div className="flex flex-col gap-4">
-        {displayBuilds.map((build) => (
-          <BuildTile
-            key={build.id}
-            build={build}
-            isInitiallyLiked={likes?.includes(build.id)}
-            authedUser={authedUser}
-          />
-        ))}
+        {displayBuilds.map((build, idx) => {
+          if (idx === displayBuilds.length - 1) {
+            return (
+              <div ref={targetRef} key={build.id}>
+                <BuildTile
+                  build={build}
+                  isInitiallyLiked={likes?.includes(build.id)}
+                  authedUser={authedUser}
+                />
+              </div>
+            );
+          } else {
+            return (
+              <BuildTile
+                key={build.id}
+                build={build}
+                isInitiallyLiked={likes?.includes(build.id)}
+                authedUser={authedUser}
+              />
+            );
+          }
+        })}
       </div>
       <div className="from-bg100 fixed bottom-0 left-0 h-24 w-full bg-gradient-to-t to-transparent" />
     </div>

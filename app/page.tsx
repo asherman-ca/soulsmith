@@ -19,7 +19,7 @@ export default async function Index() {
       `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
     )
     .order("id", { ascending: false })
-    .limit(50);
+    .limit(10);
 
   const result: any = data!;
 
