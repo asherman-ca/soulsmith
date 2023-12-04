@@ -81,10 +81,6 @@ export default async function Index({
 
         <BuildTableNav />
 
-        {/* <Suspense fallback={<BuildTableSkeleton />}>
-          <BuildTableContainer />
-        </Suspense> */}
-
         <BuildTable
           builds={result}
           characters={result2}
