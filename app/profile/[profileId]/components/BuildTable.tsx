@@ -92,6 +92,7 @@ const BuildTable: FC<BuildTableProps> = ({
           />
         ))}
       </div>
+      <div className="from-bg100 fixed bottom-0 left-0 h-24 w-full bg-gradient-to-t to-transparent" />
     </div>
   );
 };

@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground-500 dark">
+      <body className="overflow-auto bg-background text-foreground-500 dark scrollbar-hide">
         <Providers>
           <Toaster />
           <Nav />
