@@ -5,12 +5,14 @@ import { redirect } from "next/navigation";
 import React from "react";
 import BuildTable from "./[profileId]/components/BuildTable";
 import ProfileBuildTableNav from "./components/ProfileBuildTableNav";
+import { PAGINATION_LIMIT } from "@/utils/contants";
 
 export const dynamic = "force-dynamic";
 
 type ProfileProps = {
   searchParams: {
     sort: string;
+    class: string;
   };
 };
 
@@ -28,38 +30,56 @@ const page = async ({ searchParams }: ProfileProps) => {
   let result: any;
 
   if (searchParams.sort === "liked") {
-    // const { data, error } = await supabase
-    //   .from("profiles")
-    //   .select(
-    //     `*, builds:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
-    //   )
-    //   .eq("id", user.id)
-    //   .limit(50);
+    if (searchParams.class) {
+      const { data: likedBuilds, error: likedBuildsError } = await supabase
+        .from("build_likes")
+        .select(
+          `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*))`,
+        )
+        .eq("user", user.id)
+        .limit(PAGINATION_LIMIT * 5);
 
-    // result = data![0];
-    // result.builds.sort(
-    //   (a: any, b: any) => b.like_count[0].count - a.like_count[0].count,
-    // );
+      result = {
+        builds: likedBuilds!
+          .map((build: any) => build.build)
+          .filter((build) => build.type === searchParams.class),
+      };
+    } else {
+      const { data: likedBuilds, error: likedBuildsError } = await supabase
+        .from("build_likes")
+        .select(
+          `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
+        )
+        .eq("user", user.id)
+        .limit(PAGINATION_LIMIT * 5);
 
-    const { data: likedBuilds, error: likedBuildsError } = await supabase
-      .from("build_likes")
-      .select(
-        "*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))",
-      )
-      .eq("user", user.id)
-      .limit(50);
-
-    result = { builds: likedBuilds!.map((build: any) => build.build) };
+      result = { builds: likedBuilds!.map((build: any) => build.build) };
+    }
   } else {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(
-        `*, builds:builds(*, skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*), weapon:weapons(*)))`,
-      )
-      .eq("id", user.id)
-      .limit(50);
+    if (searchParams.class) {
+      const { data, error } = await supabase
+        .from("builds")
+        .select(
+          `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+        )
+        .eq("type", searchParams.class)
+        .eq("user", user.id)
+        .order("id", { ascending: false })
+        .limit(PAGINATION_LIMIT);
 
-    result = data![0];
+      result = { builds: [...data!] };
+    } else {
+      const { data, error } = await supabase
+        .from("builds")
+        .select(
+          `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+        )
+        .eq("user", user.id)
+        .order("id", { ascending: false })
+        .limit(PAGINATION_LIMIT);
+
+      result = { builds: [...data!] };
+    }
   }
 
   const { data: characterData, error: characterError } = await supabase
@@ -101,6 +121,8 @@ const page = async ({ searchParams }: ProfileProps) => {
           }`}
           likes={likes!}
           authedUser={!!user}
+          likedFilter={searchParams.sort === "liked"}
+          userId={user.id}
         />
       </div>
     </div>

@@ -1,12 +1,12 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/tw";
 import BuildTile from "./BuildTile";
-import useIntersection from "@/utils/hooks/useIntersection";
 import { createClient } from "@/utils/supabase/client";
 import { PAGINATION_LIMIT } from "@/utils/contants";
+import { useIntersection } from "@mantine/hooks";
 
 interface BuildTableProps {
   characters: Character[];
@@ -16,6 +16,7 @@ interface BuildTableProps {
   likes?: any[] | null;
   authedUser: boolean;
   likedFilter: boolean;
+  userId: string;
 }
 
 const BuildTable: FC<BuildTableProps> = ({
@@ -26,45 +27,112 @@ const BuildTable: FC<BuildTableProps> = ({
   likes,
   authedUser,
   likedFilter,
+  userId,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { targetRef, isIntersecting } = useIntersection();
+  const lastPostRef = useRef<HTMLElement>(null);
+  const { entry, ref } = useIntersection({
+    root: lastPostRef.current,
+    threshold: 1,
+  });
   const [isFetching, setIsFetching] = useState(false);
   const [curPage, setCurPage] = useState(1);
-  const [displayBuilds, setDisplayBuilds] = useState<any[]>(
-    builds.filter((build) => {
-      if (searchParams.get("class")) {
-        return build.character.name === searchParams.get("class");
-      } else {
-        return true;
-      }
-    }),
-  );
-
+  const [displayBuilds, setDisplayBuilds] = useState<any[]>(builds);
   const supabase = createClient();
 
   useEffect(() => {
-    if (isIntersecting) {
+    setDisplayBuilds(builds);
+    setCurPage(1);
+  }, [builds]);
+
+  useEffect(() => {
+    setCurPage(1);
+  }, []);
+
+  useEffect(() => {
+    if (likedFilter) return;
+    if (entry?.isIntersecting) {
       const fetchMoreBuilds = async () => {
-        const { data, error } = await supabase
-          .from("builds")
-          .select(
-            `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
-          )
-          .order("id", { ascending: false })
-          .range(curPage * PAGINATION_LIMIT, (curPage + 1) * PAGINATION_LIMIT);
-
-        const result: any = data!;
-
+        let result: any;
+        if (likedFilter) {
+          if (searchParams.get("class")) {
+            const { data, error } = await supabase
+              .from("build_likes")
+              .select(
+                `*, build:builds(*, like_count:build_likes(count), skills:build_skills(position, skill:skills(*)), likes:build_likes(*), character:characters(*).eq('character.name', ${searchParams.get(
+                  "class",
+                )}), weapon:weapons(*)))`,
+              )
+              .eq("user", userId)
+              .limit(PAGINATION_LIMIT)
+              .range(
+                curPage * PAGINATION_LIMIT,
+                (curPage + 1) * PAGINATION_LIMIT,
+              );
+            result = { builds: data!.map((build: any) => build.build) };
+            if (result.length > 0) {
+              setCurPage((prev) => prev + 1);
+            }
+          } else {
+            const { data, error } = await supabase
+              .from("builds")
+              .select(
+                `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+              )
+              .order("id", { ascending: false })
+              .range(
+                curPage * PAGINATION_LIMIT,
+                (curPage + 1) * PAGINATION_LIMIT,
+              );
+            result = data!;
+            if (result.length > 0) {
+              setCurPage((prev) => prev + 1);
+            }
+          }
+        } else {
+          if (searchParams.get("class")) {
+            const { data, error } = await supabase
+              .from("builds")
+              .select(
+                `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+              )
+              .eq("type", searchParams.get("class"))
+              .eq("user", userId)
+              .order("id", { ascending: false })
+              .range(
+                curPage * PAGINATION_LIMIT,
+                (curPage + 1) * PAGINATION_LIMIT,
+              );
+            result = data!;
+            if (result.length > 0) {
+              setCurPage((prev) => prev + 1);
+            }
+          } else {
+            const { data, error } = await supabase
+              .from("builds")
+              .select(
+                `*, skills:build_skills(position, skill:skills(*)), character:characters(*), weapon:weapons(*), likes:build_likes(*), profile:profiles(*)`,
+              )
+              .eq("user", userId)
+              .order("id", { ascending: false })
+              .range(
+                curPage * PAGINATION_LIMIT,
+                (curPage + 1) * PAGINATION_LIMIT,
+              );
+            result = data!;
+            if (result.length > 0) {
+              setCurPage((prev) => prev + 1);
+            }
+          }
+        }
         setDisplayBuilds((prev) => [...prev, ...result]);
-        setCurPage((prev) => prev + 1);
         setIsFetching(false);
       };
       setIsFetching(true);
       fetchMoreBuilds();
     }
-  }, [isIntersecting]);
+  }, [entry]);
 
   // const displayBuilds = builds.filter((build) => {
   //   if (searchParams.get("class")) {
@@ -127,7 +195,7 @@ const BuildTable: FC<BuildTableProps> = ({
         {displayBuilds.map((build, idx) => {
           if (idx === displayBuilds.length - 1) {
             return (
-              <div ref={targetRef} key={build.id}>
+              <div ref={ref} key={build.id}>
                 <BuildTile
                   build={build}
                   isInitiallyLiked={likes?.includes(build.id)}
