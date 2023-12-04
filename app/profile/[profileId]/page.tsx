@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import React from "react";
 import BuildTable from "./components/BuildTable";
 import { PAGINATION_LIMIT } from "@/utils/contants";
+import { profile } from "console";
 
 export const dynamic = "force-dynamic";
 
@@ -65,11 +66,17 @@ const page = async ({ params, searchParams }: ProfileProps) => {
 
   // console.log("result", result);
 
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", params.profileId);
+
   const result2: any = characterData!;
-  const dateString = result.builds[result.builds.length - 1].created_at;
-  const dateObject = new Date(dateString);
-  const options: any = { year: "numeric", month: "short", day: "numeric" };
-  const formattedDate = dateObject.toLocaleDateString("en-US", options);
+  const profileResult: any = profileData![0];
+  // const dateString = result.builds[result.builds.length - 1].created_at;
+  // const dateObject = new Date(dateString);
+  // const options: any = { year: "numeric", month: "short", day: "numeric" };
+  // const formattedDate = dateObject.toLocaleDateString("en-US", options);
 
   const {
     data: { user },
@@ -97,18 +104,18 @@ const page = async ({ params, searchParams }: ProfileProps) => {
           </span>
           <span className="flex items-center text-gray-300">
             <IconChevronRight height={16} width={16} />
-            {result.username || params.profileId}
+            {profileResult.username || params.profileId}
           </span>
         </h3>
 
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold">
-            {result.username || params.profileId}'s Builds
+            {profileResult.username || params.profileId}'s Builds
           </h2>
           <p className="text-xs">
             {result.builds.length} builds •{" "}
-            <span className="text-gray-400">Last updated on</span>{" "}
-            <span>{formattedDate}</span>
+            {/* <span className="text-gray-400">Last updated on</span>{" "} */}
+            {/* <span>{formattedDate}</span> */}
           </p>
         </div>
 
