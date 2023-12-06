@@ -222,10 +222,9 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
         </div>
         {/* Rune Select */}
         <div className="flex flex-col gap-4">
-          <h2 className="font-bold">Versatility</h2>
+          <h2 className="font-bold">VERSATILITY</h2>
           <div className="flex gap-4">
             {Object.keys(watch("versatility")).map((runePosition) => {
-              console.log("runePosition", runePosition);
               return (
                 <RuneTile
                   key={runePosition}
@@ -239,7 +238,20 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="font-bold">Tenacity</h2>
+          <h2 className="font-bold">TENACITY</h2>
+          <div className="flex gap-4">
+            {Object.keys(watch("tenacity")).map((runePosition) => {
+              return (
+                <RuneTile
+                  key={runePosition}
+                  handleModalChange={handleModalChange}
+                  watch={watch}
+                  runePosition={parseInt(runePosition)}
+                  type="tenacity"
+                />
+              );
+            })}
+          </div>
         </div>
 
         <Modal isOpen={isModalOpen} onOpenChange={onModalOpenChange}>
