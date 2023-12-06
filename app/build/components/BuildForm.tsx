@@ -11,10 +11,13 @@ import SkillTile from "./SkillTile";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import RuneSelect from "./RuneSelect";
+import RuneTile from "./RuneTile";
 
 interface BuildFormProps {
   skills: Skill[];
   characters: Character[];
+  runes: Rune[];
 }
 
 type Inputs = {
@@ -28,9 +31,12 @@ type Inputs = {
     stats: string;
     id: number | null;
   };
+  versatility: { [key: number]: Rune };
+  tenacity: { [key: number]: Rune };
 };
 
-const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
+const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
+  console.log("runes", runes);
   const router = useRouter();
   const supabase = createClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -41,9 +47,9 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
   };
   const handleModalChange = (type: string, position?: number) => {
     setModalType(type);
-    if (type === "skill" && position) {
-      setActivePosition(position);
-    }
+    // if (type === "skill" && position) {
+    position && setActivePosition(position);
+    // }
     flushSync(() => {
       setIsModalOpen(true);
     });
@@ -72,6 +78,8 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         id: null,
       },
       skills: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {} },
+      versatility: { 1: {}, 2: {}, 3: {}, 4: {} },
+      tenacity: { 1: {}, 2: {}, 3: {}, 4: {} },
     },
   });
 
@@ -214,7 +222,24 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
         </div>
         {/* Rune Select */}
         <div className="flex flex-col gap-4">
-          <h2 className="font-bold">RUNES</h2>
+          <h2 className="font-bold">Versatility</h2>
+          <div className="flex gap-4">
+            {Object.keys(watch("versatility")).map((runePosition) => {
+              console.log("runePosition", runePosition);
+              return (
+                <RuneTile
+                  key={runePosition}
+                  handleModalChange={handleModalChange}
+                  watch={watch}
+                  runePosition={parseInt(runePosition)}
+                  type="versatility"
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-bold">Tenacity</h2>
         </div>
 
         <Modal isOpen={isModalOpen} onOpenChange={onModalOpenChange}>
@@ -232,6 +257,22 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters }) => {
             <SkillSelect
               watch={watch}
               skills={skills}
+              setValue={setValue}
+              activePosition={activePosition}
+            />
+          )}
+          {modalType === "versatility" && (
+            <RuneSelect
+              watch={watch}
+              runes={runes.filter((rune) => rune.type === "versatility")}
+              setValue={setValue}
+              activePosition={activePosition}
+            />
+          )}
+          {modalType === "tenacity" && (
+            <RuneSelect
+              watch={watch}
+              runes={runes.filter((rune) => rune.type === "tenacity")}
               setValue={setValue}
               activePosition={activePosition}
             />

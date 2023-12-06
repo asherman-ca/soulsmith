@@ -29,6 +29,14 @@ declare interface Character {
   weapons: any[];
 }
 
+declare interface Rune {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  type: "versatility" | "tenacity";
+}
+
 declare interface BuildData {
   id: number;
   name: string;

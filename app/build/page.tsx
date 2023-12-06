@@ -21,6 +21,9 @@ const page = async () => {
   const skills = await supabase.from("skills").select("*");
   const skillData: Skill[] = skills.data!;
 
+  const runes = await supabase.from("runes").select("*");
+  const runeData: Rune[] = runes.data!;
+
   const { data, error } = await supabase.from("characters").select(`
       *,
       weapons (
@@ -39,7 +42,11 @@ const page = async () => {
             Build Planner
           </span>
         </h3>
-        <BuildForm skills={skillData} characters={characterData} />
+        <BuildForm
+          skills={skillData}
+          characters={characterData}
+          runes={runeData}
+        />
       </div>
     </main>
   );
