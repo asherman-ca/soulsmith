@@ -15,6 +15,8 @@ const RuneTile: FC<RuneTileProps> = ({
   runePosition,
   type,
 }) => {
+  console.log("runePosition", runePosition);
+  console.log("type", type);
   return (
     <div
       onClick={() => handleModalChange(type, runePosition)}

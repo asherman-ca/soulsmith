@@ -36,7 +36,6 @@ type Inputs = {
 };
 
 const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
-  console.log("runes", runes);
   const router = useRouter();
   const supabase = createClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -47,9 +46,9 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
   };
   const handleModalChange = (type: string, position?: number) => {
     setModalType(type);
-    // if (type === "skill" && position) {
-    position && setActivePosition(position);
-    // }
+    if (position) {
+      setActivePosition(position);
+    }
     flushSync(() => {
       setIsModalOpen(true);
     });
@@ -122,6 +121,11 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
     router.refresh();
   };
 
+  // console.log("modalType", modalType);
+  // console.log("activePosition", activePosition);
+  const versaRunes = runes.filter((rune) => rune.type === "versatility");
+  const tenaRunes = runes.filter((rune) => rune.type === "tenacity");
+
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
@@ -164,7 +168,6 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           </div>
           {watch("character").name && (
             <div className="flex flex-col gap-2">
-              {/* <h2 className="font-semibold">WEAPON</h2> */}
               <div
                 className="border-border100 h-16 w-16 cursor-pointer rounded-md border-2"
                 onClick={() => handleModalChange("weapon")}
@@ -231,7 +234,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
                   handleModalChange={handleModalChange}
                   watch={watch}
                   runePosition={parseInt(runePosition)}
-                  type="versatility"
+                  type={"versatility"}
                 />
               );
             })}
@@ -243,11 +246,11 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
             {Object.keys(watch("tenacity")).map((runePosition) => {
               return (
                 <RuneTile
-                  key={runePosition}
+                  key={`${runePosition} - tenacity`}
                   handleModalChange={handleModalChange}
                   watch={watch}
                   runePosition={parseInt(runePosition)}
-                  type="tenacity"
+                  type={"tenacity"}
                 />
               );
             })}
@@ -276,7 +279,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           {modalType === "versatility" && (
             <RuneSelect
               watch={watch}
-              runes={runes.filter((rune) => rune.type === "versatility")}
+              runes={versaRunes}
               setValue={setValue}
               activePosition={activePosition}
             />
@@ -284,7 +287,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           {modalType === "tenacity" && (
             <RuneSelect
               watch={watch}
-              runes={runes.filter((rune) => rune.type === "tenacity")}
+              runes={tenaRunes}
               setValue={setValue}
               activePosition={activePosition}
             />
@@ -307,7 +310,6 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           {...register("description")}
           variant={"bordered"}
         />
-        {/* <p className="whitespace-pre-line">{watch("description")}</p> */}
         <Button
           onClick={handleSubmit(onSubmit)}
           variant="bordered"

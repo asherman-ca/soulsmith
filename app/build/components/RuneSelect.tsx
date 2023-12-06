@@ -24,7 +24,8 @@ const RuneSelect: FC<RuneSelectProps> = ({
   setValue,
   activePosition,
 }) => {
-  console.log("pos", activePosition);
+  // console.log("pos", activePosition);
+  // console.log("runes", runes);
   const [filter, setFilter] = useState<string>("");
   const displayRunes = runes
     .filter((rune) => {
