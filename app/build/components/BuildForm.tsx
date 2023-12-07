@@ -158,6 +158,16 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
 
   const versaRunes = runes.filter((rune) => rune.type === "versatility");
   const tenaRunes = runes.filter((rune) => rune.type === "tenacity");
+  const uncommonRunes = tenaRunes.filter((rune) => rune.rarity === "uncommon");
+  const rareRunes = tenaRunes.filter((rune) => rune.rarity === "rare");
+  const epicRunes = tenaRunes.filter((rune) => rune.rarity === "epic");
+  const legoRunes = tenaRunes.filter((rune) => rune.rarity === "legendary");
+  const sortedTenaRunes = [
+    ...uncommonRunes,
+    ...rareRunes,
+    ...epicRunes,
+    ...legoRunes,
+  ];
 
   return (
     <div className="flex flex-col gap-4">
@@ -320,7 +330,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           {modalType === "tenacity" && (
             <RuneSelect
               watch={watch}
-              runes={tenaRunes}
+              runes={sortedTenaRunes}
               setValue={setValue}
               activePosition={activePosition}
             />

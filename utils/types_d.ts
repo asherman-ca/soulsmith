@@ -35,6 +35,7 @@ declare interface Rune {
   description: string;
   image: string;
   type: "versatility" | "tenacity";
+  rarity: "uncommon" | "rare" | "epic" | "legendary";
 }
 
 declare interface BuildData {

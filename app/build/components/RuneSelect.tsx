@@ -25,11 +25,10 @@ const RuneSelect: FC<RuneSelectProps> = ({
   activePosition,
 }) => {
   const [filter, setFilter] = useState<string>("");
-  const displayRunes = runes
-    .filter((rune) => {
-      return rune.name.toLowerCase().includes(filter.toLowerCase());
-    })
-    .sort((a: Rune, b: Rune) => a.name.localeCompare(b.name));
+  const displayRunes = runes.filter((rune) => {
+    return rune.name.toLowerCase().includes(filter.toLowerCase());
+  });
+  // .sort((a: Rune, b: Rune) => a.name.localeCompare(b.name));
 
   return (
     <ModalContent>
@@ -44,7 +43,7 @@ const RuneSelect: FC<RuneSelectProps> = ({
               // label="Search by name"
             />
           </ModalHeader>
-          <ModalBody>
+          <ModalBody className="max-h-[400px] overflow-auto">
             <div className="grid grid-cols-5 gap-4 pt-2">
               {displayRunes.map((rune) => (
                 <div key={rune.id} className="group cursor-pointer">
