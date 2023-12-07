@@ -24,8 +24,6 @@ const RuneSelect: FC<RuneSelectProps> = ({
   setValue,
   activePosition,
 }) => {
-  // console.log("pos", activePosition);
-  // console.log("runes", runes);
   const [filter, setFilter] = useState<string>("");
   const displayRunes = runes
     .filter((rune) => {
@@ -50,19 +48,34 @@ const RuneSelect: FC<RuneSelectProps> = ({
             <div className="grid grid-cols-5 gap-4 pt-2">
               {displayRunes.map((rune) => (
                 <div key={rune.id} className="group cursor-pointer">
-                  <Image
-                    onClick={() => {
-                      onClose();
-                      setValue(`${rune.type}`, {
-                        ...watch(`${rune.type}`),
-                        [activePosition]: rune,
-                      });
+                  <Tooltip
+                    placement="bottom"
+                    color="default"
+                    classNames={{
+                      base: ["border-2 rounded-md border-border100 bg-bg100"],
+                      content: ["p-2 rounded-md text-xs"],
                     }}
-                    src={rune.image}
-                    height={100}
-                    width={100}
-                    alt="rune image"
-                  />
+                    content={
+                      <div className="flex flex-col gap-1">
+                        <h1 className="text-base font-medium">{rune.name}</h1>
+                        <p>{rune.description}</p>
+                      </div>
+                    }
+                  >
+                    <Image
+                      onClick={() => {
+                        onClose();
+                        setValue(`${rune.type}`, {
+                          ...watch(`${rune.type}`),
+                          [activePosition]: rune,
+                        });
+                      }}
+                      src={rune.image}
+                      height={100}
+                      width={100}
+                      alt="rune image"
+                    />
+                  </Tooltip>
                 </div>
               ))}
             </div>

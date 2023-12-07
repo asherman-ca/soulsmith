@@ -15,12 +15,10 @@ const RuneTile: FC<RuneTileProps> = ({
   runePosition,
   type,
 }) => {
-  console.log("runePosition", runePosition);
-  console.log("type", type);
   return (
     <div
       onClick={() => handleModalChange(type, runePosition)}
-      className="border-border100 h-16 w-16 cursor-pointer rounded-md border-2"
+      className="h-16 w-16 cursor-pointer rounded-md border-2 border-border100"
     >
       {watch(type)[runePosition]?.image && (
         <Tooltip

@@ -51,4 +51,5 @@ declare interface BuildData {
   };
   user: string;
   likes: BuildLike[];
+  runes: { rune: Rune }[];
 }

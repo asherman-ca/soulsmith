@@ -26,6 +26,7 @@ const page = async ({ params: { buildId } }: BuildProps) => {
     .select(
       `*,
       skills:build_skills(skill:skills(*)),
+      runes:build_runes(rune:runes(*)),
       character:characters(*),
       weapon:weapons(*),
       profile:profiles(*),
@@ -55,7 +56,10 @@ const page = async ({ params: { buildId } }: BuildProps) => {
     likesData!.length > 0 && (initialLike = true);
   }
 
-  console.log("like", initialLike);
+  const versaRunes = result.runes.filter(
+    ({ rune }) => rune.type === "versatility",
+  );
+  const tenaRunes = result.runes.filter(({ rune }) => rune.type === "tenacity");
 
   return (
     <div className="page-container">
@@ -73,13 +77,13 @@ const page = async ({ params: { buildId } }: BuildProps) => {
         </h3>
 
         <div className="flex flex-col">
-          <div className="bg-bg100 border-border100 flex flex-col gap-2 rounded-t-md border-2 p-4">
+          <div className="flex flex-col gap-2 rounded-t-md border-2 border-border100 bg-bg100 p-4">
             <p className="text-xs text-foreground/50">
               Soulstone Survivors {result.character.name} Build
             </p>
             <p className="text-lg font-bold">{result.name}</p>
           </div>
-          <div className="bg-bg100 border-border100 flex items-center gap-4 rounded-b-md border-2 border-t-0 p-4 text-xs">
+          <div className="flex items-center gap-4 rounded-b-md border-2 border-t-0 border-border100 bg-bg100 p-4 text-xs">
             <Link href={`/profile/${result.profile.id}`} className="">
               by{" "}
               <span className="text-sm font-bold text-primary-400/90">
@@ -97,11 +101,11 @@ const page = async ({ params: { buildId } }: BuildProps) => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
+          <div className="flex flex-col gap-4 rounded-md border-2 border-border100 bg-bg100 p-4 text-sm">
             <div className="flex items-center gap-4">
               <div className="flex flex-col gap-4">
                 <h2 className="font-bold">CHARACTER</h2>
-                <div className="border-border100 h-24 w-24 rounded-md border-2">
+                <div className="h-24 w-24 rounded-md border-2 border-border100">
                   <Tooltip
                     placement="bottom"
                     color="default"
@@ -129,7 +133,7 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                 </div>
               </div>
               {result.weapon?.image && (
-                <div className="border-border100 h-16 w-16 rounded-md border-2">
+                <div className="h-16 w-16 rounded-md border-2 border-border100">
                   <Tooltip
                     placement="bottom"
                     color="default"
@@ -170,7 +174,7 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                   {result.skills.map(({ skill }, idx) => (
                     <div
                       key={`${skill.id} - ${idx}`}
-                      className="border-border100 h-16 w-16 rounded-md border-2"
+                      className="h-16 w-16 rounded-md border-2 border-border100"
                     >
                       <Tooltip
                         placement="bottom"
@@ -202,15 +206,98 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                 </div>
               </div>
             )}
+
+            {versaRunes && (
+              <div className="flex flex-col gap-4">
+                <h2 className="font-bold">VERSATILITY</h2>
+                <div className="flex gap-4">
+                  {versaRunes.map(({ rune }, idx) => (
+                    <div
+                      className="h-16 w-16 cursor-pointer rounded-md border-2 border-border100"
+                      key={`${rune.id} - ${idx} - versatility`}
+                    >
+                      <Tooltip
+                        placement="bottom"
+                        color="default"
+                        classNames={{
+                          base: [
+                            "border-2 rounded-md border-border100 bg-bg100",
+                          ],
+                          content: ["p-2 rounded-md text-xs"],
+                        }}
+                        content={
+                          <div className="flex flex-col gap-1">
+                            <h1 className="text-base font-medium">
+                              {rune.name}
+                            </h1>
+                            <p>{rune.description}</p>
+                          </div>
+                        }
+                      >
+                        <Image
+                          src={rune.image}
+                          height={100}
+                          width={100}
+                          alt="rune image"
+                          className="h-full w-full rounded-md"
+                        />
+                      </Tooltip>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {tenaRunes && (
+              <div className="flex flex-col gap-4">
+                <h2 className="font-bold">TENACITY</h2>
+                <div className="flex gap-4">
+                  {tenaRunes.map(({ rune }, idx) => (
+                    <div
+                      className="h-16 w-16 cursor-pointer rounded-md border-2 border-border100"
+                      key={`${rune.id} - ${idx} - tenacity`}
+                    >
+                      <Tooltip
+                        placement="bottom"
+                        color="default"
+                        classNames={{
+                          base: [
+                            "border-2 rounded-md border-border100 bg-bg100",
+                          ],
+                          content: ["p-2 rounded-md text-xs"],
+                        }}
+                        content={
+                          <div className="flex flex-col gap-1">
+                            <h1 className="text-base font-medium">
+                              {rune.name}
+                            </h1>
+                            <p>{rune.description}</p>
+                          </div>
+                        }
+                      >
+                        <Image
+                          src={rune.image}
+                          height={100}
+                          width={100}
+                          alt="rune image"
+                          className="h-full w-full rounded-md"
+                        />
+                      </Tooltip>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="bg-bg100 border-border100 flex flex-col gap-1 rounded-md border-2 p-4">
-          <p className="text-sm font-bold">BUILD NOTES</p>
-          {result?.description && (
+        {result?.description && (
+          <div className="flex flex-col gap-1 rounded-md border-2 border-border100 bg-bg100 p-4">
+            <p className="text-sm font-bold">BUILD NOTES</p>
+
             <NoteSection description={result.description} />
-          )}
-        </div>
+          </div>
+        )}
 
         {user && user.id === result.user && (
           <div className="mt-auto">

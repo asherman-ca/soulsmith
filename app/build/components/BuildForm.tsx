@@ -77,7 +77,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
         id: null,
       },
       skills: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {} },
-      versatility: { 1: {}, 2: {}, 3: {}, 4: {} },
+      versatility: { 1: {}, 2: {}, 3: {} },
       tenacity: { 1: {}, 2: {}, 3: {}, 4: {} },
     },
   });
@@ -117,25 +117,58 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
         .insert([...skillPayload]);
     }
 
+    const versaPayload = Object.keys(formData.versatility)
+      .filter((key: any) => {
+        return formData.versatility[key].id !== undefined;
+      })
+      .map((key: any) => ({
+        build_id: data[0].id,
+        rune_id: formData.versatility[key].id,
+        position: Number(key),
+        type: "versatility",
+      }));
+
+    const tenaPayload = Object.keys(formData.tenacity)
+      .filter((key: any) => {
+        return formData.tenacity[key].id !== undefined;
+      })
+      .map((key: any) => ({
+        build_id: data[0].id,
+        rune_id: formData.tenacity[key].id,
+        position: Number(key),
+        type: "tenacity",
+      }));
+
+    const runePayload = [...versaPayload, ...tenaPayload];
+
+    console.log("payload", runePayload);
+
+    if (runePayload.length > 0) {
+      const { data: runeResponse, error: runeError } = await supabase
+        .from("build_runes")
+        .insert([...runePayload]);
+
+      console.log("res", runeResponse);
+      console.log("err", runeError);
+    }
+
     router.push(`/build/${data[0].id}`);
     router.refresh();
   };
 
-  // console.log("modalType", modalType);
-  // console.log("activePosition", activePosition);
   const versaRunes = runes.filter((rune) => rune.type === "versatility");
   const tenaRunes = runes.filter((rune) => rune.type === "tenacity");
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md border-2 border-border100 bg-bg100 p-4 text-sm">
         {/* Character and weapon select */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-4">
             <h2 className="font-bold">CHARACTER</h2>
             <div
               onClick={() => handleModalChange("character")}
-              className="border-border100 h-24 w-24 cursor-pointer rounded-md border-2"
+              className="h-24 w-24 cursor-pointer rounded-md border-2 border-border100"
             >
               {watch("character").image && (
                 <Tooltip
@@ -169,7 +202,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
           {watch("character").name && (
             <div className="flex flex-col gap-2">
               <div
-                className="border-border100 h-16 w-16 cursor-pointer rounded-md border-2"
+                className="h-16 w-16 cursor-pointer rounded-md border-2 border-border100"
                 onClick={() => handleModalChange("weapon")}
               >
                 {watch("weapon").image && (
@@ -295,7 +328,7 @@ const BuildForm: FC<BuildFormProps> = ({ skills, characters, runes }) => {
         </Modal>
       </div>
       {/* Build Details */}
-      <div className="bg-bg100 border-border100 flex flex-col gap-4 rounded-md border-2 p-4 text-sm">
+      <div className="flex flex-col gap-4 rounded-md border-2 border-border100 bg-bg100 p-4 text-sm">
         <h2 className="font-bold">BUILD DETAILS</h2>
         <Input
           classNames={{ inputWrapper: ["border-border100"] }}
