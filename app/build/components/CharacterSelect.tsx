@@ -30,14 +30,11 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
                   className="group flex cursor-pointer flex-col items-start gap-2 truncate"
                   key={character.id}
                 >
-                  {/* <h2 className="truncate text-sm font-semibold">
-                    {character.name}
-                  </h2> */}
                   <Tooltip
                     placement="bottom"
                     color="default"
                     classNames={{
-                      base: ["border-2 rounded-md border-gray-500 w-44"],
+                      base: ["border-2 rounded-md border-border100 w-44"],
                       content: ["p-2 rounded-md text-xs"],
                     }}
                     content={
@@ -56,7 +53,7 @@ const CharacterSelect: FC<CharacterSelectProps> = ({
                         onClose();
                       }}
                       src={character.image}
-                      className="h-full rounded-xl border-4 border-slate-300/30 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
+                      className="h-full rounded-xl border-2 border-border100 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
                       height={100}
                       width={100}
                       alt="character image"

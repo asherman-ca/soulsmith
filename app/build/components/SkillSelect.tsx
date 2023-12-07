@@ -64,7 +64,9 @@ const SkillSelect: FC<SkillSelectProps> = ({
                     placement="bottom"
                     color="default"
                     classNames={{
-                      base: ["border-2 rounded-md border-gray-500 w-60"],
+                      base: [
+                        "border-2 rounded-md border-border100 w-60 bg-bg100",
+                      ],
                       content: ["p-2 rounded-md text-xs"],
                     }}
                     content={
@@ -86,7 +88,7 @@ const SkillSelect: FC<SkillSelectProps> = ({
                         });
                       }}
                       src={skill.image}
-                      className="h-full rounded-xl border-4 border-slate-300/30 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
+                      className="h-full rounded-xl border-2 border-border100 transition-all duration-75 group-hover:scale-95 group-hover:border-slate-300/70"
                       height={100}
                       width={100}
                       alt="weapon image"
