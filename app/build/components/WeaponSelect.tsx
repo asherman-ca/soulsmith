@@ -64,6 +64,7 @@ const WeaponSelect: FC<WeaponSelectProps> = ({
                         height={100}
                         width={100}
                         alt="weapon image"
+                        priority
                       />
                     </Tooltip>
                   </div>

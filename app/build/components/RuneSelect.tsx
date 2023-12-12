@@ -73,6 +73,7 @@ const RuneSelect: FC<RuneSelectProps> = ({
                       height={100}
                       width={100}
                       alt="rune image"
+                      priority
                     />
                   </Tooltip>
                 </div>
