@@ -51,7 +51,6 @@ const BuildTable: FC<BuildTableProps> = ({
   }, []);
 
   useEffect(() => {
-    // if (likedFilter) return;
     if (entry?.isIntersecting) {
       const fetchMoreBuilds = async () => {
         let result: any;
@@ -129,10 +128,15 @@ const BuildTable: FC<BuildTableProps> = ({
           }
         }
         if (result.length > 0) {
-          setDisplayBuilds((prev) => [...prev, ...result]);
+          setTimeout(() => {
+            setDisplayBuilds((prev) => [...prev, ...result]);
+            setIsFetching(false);
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setIsFetching(false);
+          }, 1000);
         }
-
-        setIsFetching(false);
       };
       setIsFetching(true);
       fetchMoreBuilds();
@@ -212,12 +216,12 @@ const BuildTable: FC<BuildTableProps> = ({
           }
         })}
         {isFetching && (
-          <div className="flex justify-center">
+          <div className="my-4 flex justify-center">
             <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-foreground-900" />
           </div>
         )}
       </div>
-      <div className="from-bg100 fixed bottom-0 left-0 h-24 w-full bg-gradient-to-t to-transparent" />
+      <div className="fixed bottom-0 left-0 h-24 w-full bg-gradient-to-t from-bg100 to-transparent" />
     </div>
   );
 };

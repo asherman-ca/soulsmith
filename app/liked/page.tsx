@@ -38,8 +38,6 @@ export default async function Index({
       .order("id", { ascending: false })
       .limit(PAGINATION_LIMIT * 5);
 
-    console.log("data", data);
-
     result = data!;
   }
 
