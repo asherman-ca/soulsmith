@@ -262,7 +262,7 @@ const page = async ({ params: { buildId } }: BuildProps) => {
                         color="default"
                         classNames={{
                           base: [
-                            "border-2 rounded-md border-border100 bg-bg100",
+                            "border-2 rounded-md border-border100 bg-bg100 w-60",
                           ],
                           content: ["p-2 rounded-md text-xs"],
                         }}
