@@ -25,7 +25,7 @@ const RuneTile: FC<RuneTileProps> = ({
           placement="bottom"
           color="default"
           classNames={{
-            base: ["border-2 rounded-md border-border100 bg-bg100"],
+            base: ["border-2 rounded-md border-border100 bg-bg100 w-60"],
             content: ["p-2 rounded-md text-xs"],
           }}
           content={

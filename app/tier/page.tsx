@@ -1,4 +1,5 @@
 import { IconChevronRight } from "@tabler/icons-react";
+import Image from "next/image";
 import React from "react";
 
 const page = () => {
@@ -12,6 +13,11 @@ const page = () => {
             Tiers
           </span>
         </h3>
+        <div className="flex">
+          <h1 className="rounded-md bg-foreground-500 p-2 text-lg font-bold text-bg100">
+            Under Construction ⚒️
+          </h1>
+        </div>
       </div>
     </main>
   );
