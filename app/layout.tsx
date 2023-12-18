@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
@@ -27,7 +28,10 @@ export default function RootLayout({
         <Providers>
           <Toaster />
           <Nav />
-          <WithSidebar>{children}</WithSidebar>
+          <WithSidebar>
+            {children}
+            <Analytics />
+          </WithSidebar>
         </Providers>
       </body>
     </html>
